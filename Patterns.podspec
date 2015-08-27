@@ -8,7 +8,8 @@ Pod::Spec.new do |spec|
   spec.homepage     = 'https://bitbucket.org/davidbjames/patterns'
   spec.author       = 'David James'
   spec.source       = { :git => 'https://bitbucket.org/davidbjames/patterns', :tag => spec.version }
-  spec.source_files = 'Patterns/**/*.{swift,md}'
+  spec.source_files = 'Patterns/**/*.swift'
+  spec.resources    = 'Patterns/**/*.md'
   spec.requires_arc = true
   spec.platform     = :ios, '9.0'
   spec.ios.deployment_target = '8.0'
