@@ -3,10 +3,11 @@
 //  GME
 //
 //  Created by David James on 8/25/15.
-//  Copyright © 2015 Green Mountain Energy. All rights reserved.
+//  Copyright © 2015 Chaotic Moon. All rights reserved.
 //
 
 import Foundation
+import Mantle
 
 protocol Prototype : NSCopying, NSObjectProtocol {
     func clone() -> Self
@@ -18,25 +19,21 @@ protocol ModelPrototype : Prototype {
     func deepClone(dictionary: Dictionary<NSObject, AnyObject>?) -> Self?
 }
 
-extension Prototype {
+class ModelExample : MTLModel {
     
-}
-
-protocol MockMTLModel {
-    init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws
 }
 
 // Must be marked final so that Self requirements work correctly.
 // See also http://stackoverflow.com/questions/25645090/protocol-func-returning-self
 
-final class PrototypeExample : ModelPrototype { // Mantle model is NSObject + NSCopying
+final class PrototypeExample : ModelExample, ModelPrototype { // Mantle model is NSObject + NSCopying
     
     override init() {
         super.init()
     }
 
     required init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws {
-        //try super.init(dictionary: dictionaryValue)
+        try super.init(dictionary: dictionaryValue)
     }
     
     // Prototype
