@@ -7,79 +7,50 @@
 //
 
 import Foundation
-import Mantle
 
-protocol Prototype : NSCopying, NSObjectProtocol {
-    func clone() -> Self
-    func deepClone() -> Self
+//
+//     ___         _       _
+//    | _ \_ _ ___| |_ ___| |_ _  _ _ __  ___
+//    |  _/ '_/ _ \  _/ _ \  _| || | '_ \/ -_)
+//    |_| |_| \___/\__\___/\__|\_, | .__/\___|
+//                             |__/|_|
+//
+
+// Default prototype is the most basic type of prototype.
+// Initializers can copy state and/or change state to default values.
+
+// Pros: Basic out-of-box copying, with advantage of deep copying when needed.
+// Cons: Little control over the state of the copied objects
+
+public protocol DefaultPrototype : NSCopying {
+    init(clone: Self)
+    init(deepClone: Self)
 }
 
-protocol ModelPrototype : Prototype {
-    func clone(dictionary: Dictionary<NSObject, AnyObject>?) -> Self?
-    func deepClone(dictionary: Dictionary<NSObject, AnyObject>?) -> Self?
+// Data prototype supports adhoc data in the form of key value pairs.
+// Initializers can populate state on copies based on this data.
+
+// Pros: Provides more control over mutation of clones. Plays nicely
+// with model frameworks like Mantle which handle state restoration
+// based on predefined property names.
+// Cons: Creates a dependency between calling code and instances on
+// the properties/keys and values required to create state.
+
+public protocol DataPrototype : NSCopying, NSObjectProtocol {
+    init(clone: Self, data: Dictionary<NSObject, AnyObject>?)
+    init(deepClone: Self, data: Dictionary<NSObject, AnyObject>?)
 }
 
-class ModelExample : MTLModel {
-    
-}
+// Interpreted prototype. Conceptual. The idea is to use an "interpreter"
+// to map adhoc data to properties.
+//public protocol InterpreterPrototype
 
-// Must be marked final so that Self requirements work correctly.
-// See also http://stackoverflow.com/questions/25645090/protocol-func-returning-self
 
-final class PrototypeExample : ModelExample, ModelPrototype { // Mantle model is NSObject + NSCopying
-    
-    override init() {
-        super.init()
-    }
+// See the following SO article on gotchas related to using Self in protocols
+// http://stackoverflow.com/questions/25645090/protocol-func-returning-self
 
-    required init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws {
-        try super.init(dictionary: dictionaryValue)
-    }
-    
-    // Prototype
-    
-    func clone() -> PrototypeExample {
-        let clone = PrototypeExample.self()
-        return clone
-    }
-    
-    func deepClone() -> PrototypeExample {
-        let clone = self.clone()
-        // TODO: (deep)clone properties on self as necessary and re-add them to clone
-        return clone
-    }
-    
-    // ModelPrototype
-    
-    func clone(dictionary: Dictionary<NSObject, AnyObject>?) -> PrototypeExample? {
-        
-        if let dictionary = dictionary {
-            if let clone = try? PrototypeExample.self(dictionary: dictionary) {
-                // move add'l dictionary data to clone, although in this example
-                // this would be handled by Mantle super class
-                return clone
-            } else {
-                return nil
-            }
-        } else {
-            return clone()
-        }
-    }
-    
-    func deepClone(dictionary: Dictionary<NSObject, AnyObject>?) -> PrototypeExample? {
-        
-        if let clone = clone(dictionary) {
-            // TODO: (deep)clone properties on self as necessary and re-add them to clone
-            return clone
-        } else {
-            return nil
-        }
-    }
 
-    
-    override func copyWithZone(zone: NSZone) -> AnyObject {
-        // Override copy to use custom clone or deepClone method
-        return clone()
-    }
-    
-}
+
+//     required init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws {
+//try super.init(dictionary: dictionaryValue)
+//}
