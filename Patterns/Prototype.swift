@@ -16,16 +16,53 @@ import Foundation
 //                             |__/|_|
 //
 
+// (Base prototype for internal use only)
+public protocol BasePrototype : NSCopying {
+    // Define associated type. 
+    // Implementations should define this at the top of the class e.g.:
+    // typealias Prototype = MyPrototypeClass
+    typealias Prototype
+}
+
+/*
+Base prototype requires NSCopying for general compatibility 
+with other libraries or integrations that requires copying.
+
+Copy the following code snippet to implementation class:
+- cannot add via extension due to @objc limitation. :/
+
+    @objc func copyWithZone(zone: NSZone) -> AnyObject {
+        // Override copy to use custom clone or deepClone method
+        return Prototype(clone: self)
+    }
+*/
+
+
+//     ___      ___          ____  ___           __       __
+//    / _ \___ / _/__ ___ __/ / /_/ _ \_______  / /____  / /___ _____  ___
+//   / // / -_) _/ _ `/ // / / __/ ___/ __/ _ \/ __/ _ \/ __/ // / _ \/ -_)
+//  /____/\__/_/ \_,_/\_,_/_/\__/_/  /_/  \___/\__/\___/\__/\_, / .__/\__/
+//                                                         /___/_/
+
 // Default prototype is the most basic type of prototype.
 // Initializers can copy state and/or change state to default values.
 
 // Pros: Basic out-of-box copying, with advantage of deep copying when needed.
 // Cons: Little control over the state of the copied objects
 
-public protocol DefaultPrototype : NSCopying {
-    init(clone: Self)
-    init(deepClone: Self)
+public protocol DefaultPrototype : BasePrototype {
+    // Copy over properties from prototype to new instance
+    init(clone: Prototype)
+    // Copy over properties and call clone/deepClone on properties that conform to *Prototype
+    init(deepClone: Prototype)
 }
+
+
+//      ___       __       ___           __       __
+//     / _ \___ _/ /____ _/ _ \_______  / /____  / /___ _____  ___
+//    / // / _ `/ __/ _ `/ ___/ __/ _ \/ __/ _ \/ __/ // / _ \/ -_)
+//   /____/\_,_/\__/\_,_/_/  /_/  \___/\__/\___/\__/\_, / .__/\__/
+//                                                 /___/_/
 
 // Data prototype supports adhoc data in the form of key value pairs.
 // Initializers can populate state on copies based on this data.
@@ -36,9 +73,11 @@ public protocol DefaultPrototype : NSCopying {
 // Cons: Creates a dependency between calling code and instances on
 // the properties/keys and values required to create state.
 
-public protocol DataPrototype : NSCopying, NSObjectProtocol {
-    init(clone: Self, data: Dictionary<NSObject, AnyObject>?)
-    init(deepClone: Self, data: Dictionary<NSObject, AnyObject>?)
+public protocol DataPrototype : BasePrototype, NSObjectProtocol {
+    // Copy over properties from prototype to new instance
+    init(clone: Prototype, data: Dictionary<NSObject, AnyObject>?)
+    // Copy over properties and call clone/deepClone on properties that conform to *Prototype
+    init(deepClone: Prototype, data: Dictionary<NSObject, AnyObject>?)
 }
 
 // Interpreted prototype. Conceptual. The idea is to use an "interpreter"
@@ -49,8 +88,3 @@ public protocol DataPrototype : NSCopying, NSObjectProtocol {
 // See the following SO article on gotchas related to using Self in protocols
 // http://stackoverflow.com/questions/25645090/protocol-func-returning-self
 
-
-
-//     required init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws {
-//try super.init(dictionary: dictionaryValue)
-//}
