@@ -10,6 +10,7 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://bitbucket.org/davidbjames/patterns', :tag => spec.version }
   spec.source_files = 'Patterns/**/*.swift'
   spec.resources    = 'Patterns/**/*.md'
+  spec.exclude_files = 'Patterns/**/*.playground'
   spec.requires_arc = true
   spec.platform     = :ios, '9.0'
   spec.ios.deployment_target = '8.0'

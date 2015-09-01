@@ -26,17 +26,16 @@ public protocol BasePrototype : NSCopying {
 
 /*
 Base prototype requires NSCopying for general compatibility 
-with other libraries or integrations that requires copying.
+with other libraries or integrations that require copying.
 
-Copy the following code snippet to implementation class:
-- cannot add via extension due to @objc limitation. :/
+Paste the following code snippet to implementation class:
+(Unfortunately, this cannot be added via extension due to @objc limitation.)
 
     @objc func copyWithZone(zone: NSZone) -> AnyObject {
         // Override copy to use custom clone or deepClone method
         return Prototype(clone: self)
     }
 */
-
 
 //     ___      ___          ____  ___           __       __
 //    / _ \___ / _/__ ___ __/ / /_/ _ \_______  / /____  / /___ _____  ___

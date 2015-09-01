@@ -1,7 +1,7 @@
 //: [Previous](@previous)
 
 import Foundation
-import Patterns
 
+var str = "Hello, playground"
 
 //: [Next](@next)

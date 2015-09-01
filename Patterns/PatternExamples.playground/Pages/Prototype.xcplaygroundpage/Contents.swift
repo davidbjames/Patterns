@@ -1,5 +1,3 @@
-//: [Previous](@previous)
-
 import Foundation
 import Patterns
 import Mantle
@@ -51,7 +49,7 @@ class HttpRequest : DefaultPrototype {
 class Authentication : NSObject, DefaultPrototype {
     
     typealias Prototype = Authentication
-
+    
     var headers: [String:String]
     
     required init(headers: [String:String]) {
@@ -108,16 +106,16 @@ deepClonedRequest.auth.headers
 //
 // This is nearly identical to DefaultPrototype except:
 //   a. it takes an optional data payload
-//   b. (for this example), it extends Mantle model to be a more 
+//   b. (for this example), it extends Mantle model to be a more
 //      realistic implementation. Note, it does not implement
 //      Mantle boilerplate, only the initializers.
 
 class Message : MTLModel, DataPrototype {
-   
+    
     typealias Prototype = Message
-
+    
     var sender: Sender!
-
+    
     // Self
     // designated initializer
     init(sender: Sender) {
@@ -131,20 +129,20 @@ class Message : MTLModel, DataPrototype {
         try self.init(dictionary: dictionaryValue)
         self.sender = sender
     }
-
+    
     // MTLModel
     // inherited designated initializer
     override init!() { // <-- implicitly unwrapped failable initializer
         super.init()
     }
-
+    
     // NSObjectProtocol
     // required designated initializer
     required init(coder: NSCoder) {
         // TODO: sender to be created here from coder or via Mantle integration
         super.init(coder: coder)
     }
-
+    
     // MTLModelProtocol
     // required designated initializer
     required init(dictionary dictionaryValue: [NSObject : AnyObject]!) throws {
@@ -191,7 +189,7 @@ class Sender : NSObject, DataPrototype {
         self.senderId = senderId
         super.init()
     }
-
+    
     required convenience init(clone: Prototype, data: Dictionary<NSObject, AnyObject>?) {
         if let data = data {
             // Problem: dependency on keys in dictionary
@@ -207,12 +205,12 @@ class Sender : NSObject, DataPrototype {
         // No deep cloning for this example. See Message ^^
         self.init(clone: deepClone, data: data)
     }
-
+    
     @objc func copyWithZone(zone: NSZone) -> AnyObject {
         // Override copy to use custom clone or deepClone method
         return Prototype(clone: self, data: nil)
     }
-
+    
 }
 
 //
