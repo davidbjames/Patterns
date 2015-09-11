@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3E3F4FB80309C160027B0FD5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 130D5EF35F1B688384E08BD6 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E719DB4F1B973CB40086A644 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E719DB4E1B973CB40086A644 /* Mantle.framework */; };
+		E744A2701B9A1166006E6345 /* Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A26F1B9A1166006E6345 /* Concurrency.swift */; settings = {ASSET_TAGS = (); }; };
+		E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A2711B9A116C006E6345 /* WorkQueue.swift */; settings = {ASSET_TAGS = (); }; };
+		E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7945EE31B99A6E800D99085 /* ObjectPool.swift */; settings = {ASSET_TAGS = (); }; };
 		E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F893421B97120600B62257 /* Singleton.swift */; };
 		E7CC7F431B8F4946002AA9A0 /* Patterns.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7CC7F381B8F4946002AA9A0 /* Patterns.framework */; settings = {ASSET_TAGS = (); }; };
 		E7CC7F481B8F4946002AA9A0 /* PatternsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC7F471B8F4946002AA9A0 /* PatternsTests.swift */; };
@@ -31,6 +34,10 @@
 		130D5EF35F1B688384E08BD6 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7194C5E1B8F507A00BE5449 /* Patterns.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Patterns.md; sourceTree = "<group>"; };
 		E719DB4E1B973CB40086A644 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "Pods/../build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
+		E744A26F1B9A1166006E6345 /* Concurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Concurrency.swift; path = Extras/Concurrency.swift; sourceTree = "<group>"; };
+		E744A2711B9A116C006E6345 /* WorkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WorkQueue.swift; path = Extras/WorkQueue.swift; sourceTree = "<group>"; };
+		E7945EE31B99A6E800D99085 /* ObjectPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPool.swift; sourceTree = "<group>"; };
+		E7945EE91B99CA2500D99085 /* AdhocTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AdhocTests.playground; sourceTree = "<group>"; };
 		E7CC7F381B8F4946002AA9A0 /* Patterns.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Patterns.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7CC7F3B1B8F4946002AA9A0 /* Patterns.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Patterns.h; sourceTree = "<group>"; };
 		E7CC7F3D1B8F4946002AA9A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,6 +88,61 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E7945EE51B99B5F900D99085 /* Creation Patterns */ = {
+			isa = PBXGroup;
+			children = (
+				E7CC7F531B8F4B37002AA9A0 /* Prototype.swift */,
+				E7F893421B97120600B62257 /* Singleton.swift */,
+				E7945EE31B99A6E800D99085 /* ObjectPool.swift */,
+			);
+			name = "Creation Patterns";
+			sourceTree = "<group>";
+		};
+		E7945EE61B99B61000D99085 /* Structural Patterns */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Structural Patterns";
+			sourceTree = "<group>";
+		};
+		E7945EE71B99B61D00D99085 /* Behaviorial Patterns */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Behaviorial Patterns";
+			sourceTree = "<group>";
+		};
+		E7945EE81B99B62600D99085 /* Other Patterns */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Patterns";
+			sourceTree = "<group>";
+		};
+		E7945EEA1B99E2FD00D99085 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E7945EEB1B99E31200D99085 /* Speculative */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		E7945EEB1B99E31200D99085 /* Speculative */ = {
+			isa = PBXGroup;
+			children = (
+				E744A26F1B9A1166006E6345 /* Concurrency.swift */,
+			);
+			name = Speculative;
+			sourceTree = "<group>";
+		};
+		E7945EEE1B99F25700D99085 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E744A2711B9A116C006E6345 /* WorkQueue.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		E7CC7F2E1B8F4946002AA9A0 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				E7CC7F521B8F4B26002AA9A0 /* Patterns */,
+				E7945EEA1B99E2FD00D99085 /* Protocols */,
+				E7945EEE1B99F25700D99085 /* Utilities */,
 				E7F893411B9711D800B62257 /* Documentation */,
 				E7F893401B9711A400B62257 /* Supporting Files */,
 			);
@@ -123,8 +187,10 @@
 		E7CC7F521B8F4B26002AA9A0 /* Patterns */ = {
 			isa = PBXGroup;
 			children = (
-				E7CC7F531B8F4B37002AA9A0 /* Prototype.swift */,
-				E7F893421B97120600B62257 /* Singleton.swift */,
+				E7945EE51B99B5F900D99085 /* Creation Patterns */,
+				E7945EE61B99B61000D99085 /* Structural Patterns */,
+				E7945EE71B99B61D00D99085 /* Behaviorial Patterns */,
+				E7945EE81B99B62600D99085 /* Other Patterns */,
 			);
 			name = Patterns;
 			sourceTree = "<group>";
@@ -134,6 +200,7 @@
 			children = (
 				E7CC7F3B1B8F4946002AA9A0 /* Patterns.h */,
 				E7CC7F3D1B8F4946002AA9A0 /* Info.plist */,
+				E7945EE91B99CA2500D99085 /* AdhocTests.playground */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -203,6 +270,7 @@
 		E7CC7F2F1B8F4946002AA9A0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Chaotic Moon";
@@ -289,8 +357,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */,
 				E7CC7F541B8F4B37002AA9A0 /* Prototype.swift in Sources */,
 				E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */,
+				E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */,
+				E744A2701B9A1166006E6345 /* Concurrency.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
