@@ -34,11 +34,40 @@ import Foundation
     T I P S   &   C A V E A T S
     • Cocoa tables and collection views use object pools for cell reuse.
     • Keep object pools as simple as possible and prefer safety over performance.
-    • Make sure to test, test, test, in case concurrency is being used.
+    • If concurrency is being used then: test, test, test.
+    • Concurrency should be used in most cases
 
 */
 
+/**
+    Object Pool protocol.
 
+    All object pools should implement at least this interface.
+    Implementing types should be generic with <Resource> as the generic type.
+*/
+public protocol ObjectPool {
+    /// Generic type. Can be any type (not only objects). Use ObjectPoolItem as necessary.
+    typealias Resource
+    /// Check out a resource from the pool if one is available.
+    /// This is usually blocking (sync) but doesn't have to be.
+    func checkoutResource() -> Resource?
+    /// Return a resource back to the pool.
+    /// This is usually non-blocking (async).
+    func checkin(resource: Resource)
+    /// Process all resources currently in the pool.
+    /// Be aware the pool may change from what is passed to this method,
+    /// if this method is called asynchronously.
+    func processPool(callback: [Resource] -> Void)
+}
 
+/**
+    Object Pool Item protocol.
+
+    Allows items to receive callbacks at specific points in the pool life cycle.
+*/
+public protocol ObjectPoolItem {
+    /// Reset object state so it can be reused
+    func prepareForReuse()
+}
 
 

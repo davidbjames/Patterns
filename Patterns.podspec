@@ -13,5 +13,5 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.platform     = :ios, '9.0'
   spec.ios.deployment_target = '8.0'
-  spec.dependency 'Mantle', '2.0.4' # Generalized dependency for model objects
+  spec.dependency 'ObjectMapper', '0.19'
 end

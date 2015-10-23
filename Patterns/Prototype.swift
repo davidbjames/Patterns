@@ -57,20 +57,44 @@ import Foundation
                                /___/_/
 */
 
-/// Default prototype is the most basic type of prototype.
-/// Initializers can copy state and/or change state to default values.
+/**
+    Default prototype is the most basic type of prototype.
+    Initializers can copy state and/or change state to default values.
 
-/// Pros: Basic out-of-box copying, with advantage of deep copying when needed.
-/// Cons: Little control over the state of the copied objects
-
+    Pros: Basic out-of-box copying, with advantage of deep copying when needed.
+    Cons: Little control over the state of the copied objects
+*/
 public protocol Prototype : NSCopying {
-    // Implementations should define this at the top of the class
-    // e.g.: typealias Prototype = MyPrototypeClass
+    /// Implementations should define this at the top of the class
+    /// e.g.: typealias Prototype = MyPrototypeClass
     typealias Prototype
-    // Copy over properties from prototype to new instance
+    /// Copy over properties from prototype to new instance
     init(clone: Prototype)
-    // Copy over properties and call clone/deepClone on properties that conform to *Prototype
+    /// Copy over properties and call clone/deepClone on properties that conform to *Prototype
     init(deepClone: Prototype)
+}
+
+/*
+       ___                                           ___           __       __
+      / _ | ___  ___  ___  __ ____ _  ___  __ _____ / _ \_______  / /____  / /___ _____  ___
+     / __ |/ _ \/ _ \/ _ \/ // /  ' \/ _ \/ // (_-</ ___/ __/ _ \/ __/ _ \/ __/ // / _ \/ -_)
+    /_/ |_/_//_/\___/_//_/\_, /_/_/_/\___/\_,_/___/_/  /_/  \___/\__/\___/\__/\_, / .__/\__/
+                         /___/                                               /___/_/
+*/
+
+/**
+    Anonymous prototype (a specialization of Prototype) is used when the concrete
+    type is not known, for example, when passing to a class that accepts a generic 
+    "Prototype" which can't be initialized since the concrete type is not known.
+
+    Pros: More abstract and therefore more flexible for loosely coupled systems.
+    Cons: Same as Prototype + larger interface (i.e. use basic Prototype in most cases)
+*/
+public protocol AnonymousPrototype : Prototype {
+    // Clone method. Use this when the concrete type is not known.
+    func clone() -> Prototype
+    // Deep clone method. Use this when the concrete type is not know.
+    func deepClone() -> Prototype
 }
 
 /*
@@ -81,15 +105,16 @@ public protocol Prototype : NSCopying {
                                                   /___/_/
 */
 
-/// Data prototype supports adhoc data in the form of key value pairs.
-/// Initializers can populate state on copies based on this data.
+/** 
+    Data prototype supports adhoc data in the form of key value pairs.
+    Initializers can populate state on copies based on this data.
 
-/// Pros: Provides more control over mutation of clones. Plays nicely
-/// with model frameworks like Mantle which handle state restoration
-/// based on predefined property names.
-/// Cons: Creates a dependency between calling code and instances on
-/// the properties/keys and values required to create state.
-
+    Pros: Provides more control over mutation of clones. Plays nicely
+    with model libraries like ObjectMapper which handle state restoration
+    based on predefined property names.
+    Cons: Creates a dependency between calling code and instances on
+    the properties/keys and values required to create state.
+*/
 public protocol DataPrototype : NSCopying, NSObjectProtocol {
     // Implementations should define this at the top of the class
     // e.g.: typealias Prototype = MyPrototypeClass
@@ -100,7 +125,8 @@ public protocol DataPrototype : NSCopying, NSObjectProtocol {
     init(deepClone: Prototype, data: Dictionary<NSObject, AnyObject>?)
 }
 
-// Interpreted prototype. Conceptual. The idea is to use an "interpreter"
-// to map adhoc data to properties.
-//public protocol InterpreterPrototype
-
+/** 
+    Interpreted/mapped prototype. Conceptual. 
+    The idea is to use an "interpreter" to map adhoc data to properties.
+    public protocol InterpreterPrototype
+*/

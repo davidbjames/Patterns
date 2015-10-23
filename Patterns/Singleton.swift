@@ -35,5 +35,6 @@ import Foundation
 
 
 public protocol Singleton {
-
+    static var instance:Self { get }
+    // in practice this s/b let
 }

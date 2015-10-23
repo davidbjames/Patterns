@@ -1,12 +1,10 @@
 PODS:
-  - Mantle (2.0.4):
-    - Mantle/extobjc (= 2.0.4)
-  - Mantle/extobjc (2.0.4)
+  - ObjectMapper (0.19)
 
 DEPENDENCIES:
-  - Mantle (= 2.0.4)
+  - ObjectMapper (~> 0.19)
 
 SPEC CHECKSUMS:
-  Mantle: 6bee68168423948be0c0c5924832bf3af188e099
+  ObjectMapper: a88114e5df20f055da63029f25cbc01014847c91
 
-COCOAPODS: 0.39.0.beta.3
+COCOAPODS: 0.39.0

@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E3F4FB80309C160027B0FD5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 130D5EF35F1B688384E08BD6 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		3E3F4FB80309C160027B0FD5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 130D5EF35F1B688384E08BD6 /* Pods.framework */; };
+		E70BB4D01BDA507100A4B1F0 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */; };
 		E719DB4F1B973CB40086A644 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E719DB4E1B973CB40086A644 /* Mantle.framework */; };
 		E744A2701B9A1166006E6345 /* Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A26F1B9A1166006E6345 /* Concurrency.swift */; settings = {ASSET_TAGS = (); }; };
 		E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A2711B9A116C006E6345 /* WorkQueue.swift */; settings = {ASSET_TAGS = (); }; };
@@ -17,6 +18,7 @@
 		E7CC7F481B8F4946002AA9A0 /* PatternsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC7F471B8F4946002AA9A0 /* PatternsTests.swift */; };
 		E7CC7F541B8F4B37002AA9A0 /* Prototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC7F531B8F4B37002AA9A0 /* Prototype.swift */; settings = {ASSET_TAGS = (); }; };
 		E7D9F1201B8F80ED00A304FF /* Patterns.md in Resources */ = {isa = PBXBuildFile; fileRef = E7194C5E1B8F507A00BE5449 /* Patterns.md */; };
+		E7F028FC1BDA6D8600F107F7 /* ObjectPoolLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,7 @@
 /* Begin PBXFileReference section */
 		127DA283CA5397E828FFFEA9 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		130D5EF35F1B688384E08BD6 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Pods/../build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 		E7194C5E1B8F507A00BE5449 /* Patterns.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Patterns.md; sourceTree = "<group>"; };
 		E719DB4E1B973CB40086A644 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "Pods/../build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
 		E744A26F1B9A1166006E6345 /* Concurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Concurrency.swift; path = Extras/Concurrency.swift; sourceTree = "<group>"; };
@@ -45,6 +48,7 @@
 		E7CC7F471B8F4946002AA9A0 /* PatternsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsTests.swift; sourceTree = "<group>"; };
 		E7CC7F491B8F4946002AA9A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7CC7F531B8F4B37002AA9A0 /* Prototype.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prototype.swift; sourceTree = "<group>"; };
+		E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolLib.swift; sourceTree = "<group>"; };
 		E7F893421B97120600B62257 /* Singleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		EE4D6B3653F1EB9A96F62C6C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E70BB4D01BDA507100A4B1F0 /* ObjectMapper.framework in Frameworks */,
 				E719DB4F1B973CB40086A644 /* Mantle.framework in Frameworks */,
 				3E3F4FB80309C160027B0FD5 /* Pods.framework in Frameworks */,
 			);
@@ -73,6 +78,7 @@
 		4A14B22ADC95CF77B88DCE11 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */,
 				E719DB4E1B973CB40086A644 /* Mantle.framework */,
 				130D5EF35F1B688384E08BD6 /* Pods.framework */,
 			);
@@ -94,6 +100,7 @@
 				E7CC7F531B8F4B37002AA9A0 /* Prototype.swift */,
 				E7F893421B97120600B62257 /* Singleton.swift */,
 				E7945EE31B99A6E800D99085 /* ObjectPool.swift */,
+				E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */,
 			);
 			name = "Creation Patterns";
 			sourceTree = "<group>";
@@ -191,8 +198,16 @@
 				E7945EE61B99B61000D99085 /* Structural Patterns */,
 				E7945EE71B99B61D00D99085 /* Behaviorial Patterns */,
 				E7945EE81B99B62600D99085 /* Other Patterns */,
+				E7F028FA1BDA6CA500F107F7 /* Algorithms */,
 			);
 			name = Patterns;
+			sourceTree = "<group>";
+		};
+		E7F028FA1BDA6CA500F107F7 /* Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Algorithms;
 			sourceTree = "<group>";
 		};
 		E7F893401B9711A400B62257 /* Supporting Files */ = {
@@ -357,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7F028FC1BDA6D8600F107F7 /* ObjectPoolLib.swift in Sources */,
 				E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */,
 				E7CC7F541B8F4B37002AA9A0 /* Prototype.swift in Sources */,
 				E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */,

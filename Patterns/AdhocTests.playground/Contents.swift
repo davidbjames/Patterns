@@ -1,6 +1,5 @@
 
-import Cocoa
-
+import Foundation
 
 class Test {
     lazy private var serialQueue:dispatch_queue_t = {
