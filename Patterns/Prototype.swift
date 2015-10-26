@@ -110,19 +110,20 @@ public protocol AnonymousPrototype : Prototype {
     Initializers can populate state on copies based on this data.
 
     Pros: Provides more control over mutation of clones. Plays nicely
-    with model libraries like ObjectMapper which handle state restoration
-    based on predefined property names.
+    with model libraries like ObjectMapper which handle state restoration.
     Cons: Creates a dependency between calling code and instances on
     the properties/keys and values required to create state.
 */
-public protocol DataPrototype : NSCopying, NSObjectProtocol {
+public protocol DataPrototype : NSCopying /*, NSObjectProtocol */ {
     // Implementations should define this at the top of the class
     // e.g.: typealias Prototype = MyPrototypeClass
     typealias Prototype
     // Copy over properties from prototype to new instance
-    init(clone: Prototype, data: Dictionary<NSObject, AnyObject>?)
+    // Failable if data cannot be converted over to prototype
+    init?(clone: Dictionary<String, AnyObject>)
     // Copy over properties and call clone/deepClone on properties that conform to *Prototype
-    init(deepClone: Prototype, data: Dictionary<NSObject, AnyObject>?)
+    // Failable if data cannot be converted over to prototype
+    init?(deepClone: Dictionary<String, AnyObject>)
 }
 
 /** 

@@ -9,16 +9,16 @@ import Foundation
 
 
 /// Asynchronous WorkQueue scheduling operator.
-infix operator <- { associativity left }
+infix operator >- { associativity left }
 
 /// Synchronous WorkQueue scheduling operator.
-infix operator <+ { associativity left }
+infix operator >+ { associativity left }
 
 /// Asynchronous with barrier WorkQueue scheduling operator.
-infix operator |<- { associativity left }
+infix operator >|- { associativity left }
 
 /// Synchronous with barrier WorkQueue scheduling operator.
-infix operator |<+ { associativity left }
+infix operator >|+ { associativity left }
 
 
 /// Exception thrown when attempting to schedule a barrier block on a queue
@@ -332,7 +332,7 @@ public func === (left: WorkQueue, right: WorkQueue) -> Bool {
 /// WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func <- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.async(block)
     return queue
 }
@@ -342,7 +342,7 @@ public func <- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// WorkQueue (i.e., this will not return until the block has finished).
 ///
 /// Returns the queue to permit chaining.
-public func <+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.sync(block)
     return queue
 }
@@ -352,7 +352,7 @@ public func <+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// a barrier on a WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func |<- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.asyncWithBarrier(block)
     return queue
 }
@@ -363,7 +363,7 @@ public func |<- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// finished).
 ///
 /// Returns the queue to permit chaining.
-public func |<+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+public func >|+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.syncWithBarrier(block)
     return queue
 }

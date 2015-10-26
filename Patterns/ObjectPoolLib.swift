@@ -89,12 +89,12 @@ public class DefaultPool<Resource> : ObjectPool {
     Thread safe object pool
 
     - This is the base class for all thread safe object pools.
-    - Use the specialized versions in most cases e.g. EagerPool, LazyPool, etc
+    - See also specialized versions e.g. EagerPool, LazyPool, etc
     - These classes should not be used for typing -- use ObjectPool protocol instead.
 
     - Parameter Resource: generic type this pool will manage.
 */
-public class ThreadSafePool<Resource> {
+public class ThreadSafePool<Resource> : ObjectPool {
     
     /**
         Dispatch queue used for checkins/checkouts
@@ -152,10 +152,10 @@ public class ThreadSafePool<Resource> {
     public func checkoutResource() -> Resource? {
         var resource:Resource?
         if dispatch_semaphore_wait(self.semaphore, maxDispatchTime) == 0 {
-            // - This ^^ function returns 0 when the semaphore value is > 0 (success). This may be true:
-            //       - immediately -- pool is started with semaphore in > 0 state
-            //       - in case the semaphore is currently 0 and it has been signaled changing it's value to 1.
-            //   (Note: don't confuse the 0 returned from the semaphore's value)
+            // - This ^^ function returns 0 when the semaphore value is > 0 (success). This may be true immediately if,
+            //       - the pool is started with semaphore greater than 0
+            //       - the semaphore is currently 0 and it has been signaled changing it's value to 1.
+            //   (Note: don't confuse the 0 returned with the semaphore's value)
             // - Max dispatch time is the maximum time this code will block when semaphore == 0 (fail state).
             // - After max time elapses (assuming the semaphore is not signaled) the method fails and returns nil resource.
             // - Dispatch time of FOREVER (default) means this will block indefinitely.
@@ -164,7 +164,7 @@ public class ThreadSafePool<Resource> {
             // - Continuing guarantees that there is at least 1 resource available on any thread.
             // - The following code should *always* be fired synchronously to coincide with the synchronicity
             //   of semaphores.
-            self.queue <+ { () -> Void in
+            self.queue >+ { () -> Void in
                 resource = self.pool.checkoutResource()
             }
         }
@@ -179,7 +179,7 @@ public class ThreadSafePool<Resource> {
         - Parameter resource: generic Resource
     */
     public func checkin(resource: Resource) {
-        self.queue <- { () -> Void in
+        self.queue >- { () -> Void in
             self.pool.checkin(resource)
             dispatch_semaphore_signal(self.semaphore)
         }
@@ -193,7 +193,7 @@ public class ThreadSafePool<Resource> {
         - Parameter callback: closure that takes an array of current resources
     */
     public func processPool(callback: [Resource] -> Void) {
-        self.queue |<+ { () in callback(self.pool.resources) }
+        self.queue >|+ { () in callback(self.pool.resources) }
     }
 }
 
@@ -208,7 +208,7 @@ public class ThreadSafePool<Resource> {
 
     - Parameter Resource: generic type this pool will manage.
 */
-public class EagerPool<Resource> : ThreadSafePool<Resource>, ObjectPool {
+public class EagerPool<Resource> : ThreadSafePool<Resource> {
     
     /**
         Required initializer for Eager pools
@@ -243,7 +243,7 @@ public class EagerPool<Resource> : ThreadSafePool<Resource>, ObjectPool {
 
     - Parameter Resource: generic type this pool will manage.
 */
-public class LazyPool<Resource> : ThreadSafePool<Resource>, ObjectPool {
+public class LazyPool<Resource> : ThreadSafePool<Resource> {
     
     /// The maximum number of resources this pool can create (not necessarily hold)
     /// This should be a "reasonable" number based on application need, often
@@ -309,7 +309,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource>, ObjectPool {
         var resource:Resource?
         if dispatch_semaphore_wait(semaphore, maxDispatchTime) == 0 {
             // See EagerPool re: this condition ^^
-            self.queue <+ { () -> Void in
+            self.queue >+ { () -> Void in
                 if self.pool.isEmpty() && self.canCreateAnotherResource() {
                     // Re this condition ^^. As long as the pool is not empty we always
                     // return one from the pool (else block). This way we're not unecessarily initializing
