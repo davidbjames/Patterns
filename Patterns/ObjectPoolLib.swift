@@ -287,7 +287,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
         
         - Failable if Prototype does not conform to Resource type
     */
-    public convenience init?<P:AnonymousPrototype>(maxResources: Int, prototype:P) {
+    public convenience init?<P:AnonymousPrototype>(maxResources: Int, prototype: P) {
         if prototype is Resource {
             self.init(maxResources: maxResources) { () -> Resource in
                 return prototype.clone() as! Resource

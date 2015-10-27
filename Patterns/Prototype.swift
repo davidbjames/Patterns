@@ -35,8 +35,8 @@ import Foundation
     • Be aware of copy behavior of collection types like Array or NSArray. Just remember to keep knowledge of object construction encapsulated in the class that holds it's properties.
     • For general compatibility, be sure that all prototypes include conformance to NSCopying and that the  implementation calls your own prototype initializers.
 
-    • Prototype requires NSCopying for general compatibility. 
-    • Copy the following:
+    • Prototype requires NSCopying and NSObjectProtocol for general compatibility.
+    • Example:
 
     @objc func copyWithZone(zone: NSZone) -> AnyObject {
         // Override to use custom clone or deepClone method
@@ -64,7 +64,7 @@ import Foundation
     Pros: Basic out-of-box copying, with advantage of deep copying when needed.
     Cons: Little control over the state of the copied objects
 */
-public protocol Prototype : NSCopying {
+public protocol Prototype : NSCopying, NSObjectProtocol {
     /// Implementations should define this at the top of the class
     /// e.g.: typealias Prototype = MyPrototypeClass
     typealias Prototype
@@ -111,10 +111,11 @@ public protocol AnonymousPrototype : Prototype {
 
     Pros: Provides more control over mutation of clones. Plays nicely
     with model libraries like ObjectMapper which handle state restoration.
-    Cons: Creates a dependency between calling code and instances on
-    the properties/keys and values required to create state.
+    Cons: If not using a mapping strategy, can create a dependency between 
+    calling code <-> instances on the properties/keys and values required 
+    to create state.
 */
-public protocol DataPrototype : NSCopying /*, NSObjectProtocol */ {
+public protocol DataPrototype : NSCopying, NSObjectProtocol  {
     // Implementations should define this at the top of the class
     // e.g.: typealias Prototype = MyPrototypeClass
     typealias Prototype
