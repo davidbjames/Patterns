@@ -29,11 +29,16 @@ import Foundation
     T I P S   &   C A V E A T S
     • Keep singletons thread-safe so that they can be used efficiently.
     • Singletons should not be copyable.
-    • Do not use singletons to pass global state. One exception to this may be user preferences, but these should be read only and potentially abstracted into a service layer.
-
+    • Be careful how tightly coupled singletons are to application logic, which includes conditional logic
+      based on global state. Consider the possibility of abstracting out this logic into a service layer.
 */
 
+/**
+    Standard Swift singleton
 
+    Implementations should use a constant instead of a variable
+    and designated initializer should be private.
+*/
 public protocol Singleton {
     static var instance:Self { get }
     // in practice this s/b let

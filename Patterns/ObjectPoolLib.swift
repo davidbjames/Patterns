@@ -8,6 +8,20 @@
 
 import Foundation
 
+/*
+      ___  _     _        _     ___          _   _    _ _
+     / _ \| |__ (_)___ __| |_  | _ \___  ___| | | |  (_) |__
+    | (_) | '_ \| / -_) _|  _| |  _/ _ \/ _ \ | | |__| | '_ \
+     \___/|_.__// \___\__|\__| |_| \___/\___/_| |____|_|_.__/
+              |__/
+
+    Collection of reusable pools providing basic out-of-box behavior with thread safety:
+    • DefaultPool (not thread safe)
+    • ThreadSafePool
+    • EagerPool
+    • LazyPool
+*/
+
 /**
     Default object pool.
 
@@ -179,9 +193,11 @@ public class ThreadSafePool<Resource> : ObjectPool {
         - Parameter resource: generic Resource
     */
     public func checkin(resource: Resource) {
-        self.queue >- { () -> Void in
-            self.pool.checkin(resource)
-            dispatch_semaphore_signal(self.semaphore)
+        self.queue >- { [weak self] () -> Void in
+            if let wself = self {
+                wself.pool.checkin(resource)
+                dispatch_semaphore_signal(wself.semaphore)
+            }
         }
     }
     

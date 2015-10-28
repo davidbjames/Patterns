@@ -10,9 +10,11 @@
 		3E3F4FB80309C160027B0FD5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 130D5EF35F1B688384E08BD6 /* Pods.framework */; };
 		E70BB4D01BDA507100A4B1F0 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */; };
 		E719DB4F1B973CB40086A644 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E719DB4E1B973CB40086A644 /* Mantle.framework */; };
-		E744A2701B9A1166006E6345 /* Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A26F1B9A1166006E6345 /* Concurrency.swift */; settings = {ASSET_TAGS = (); }; };
 		E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A2711B9A116C006E6345 /* WorkQueue.swift */; settings = {ASSET_TAGS = (); }; };
+		E77398D61BDFDEBE00CF3EE5 /* FactoryMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */; settings = {ASSET_TAGS = (); }; };
 		E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7945EE31B99A6E800D99085 /* ObjectPool.swift */; settings = {ASSET_TAGS = (); }; };
+		E7C7A3811BE142260004C092 /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C7A3801BE142260004C092 /* Worker.swift */; settings = {ASSET_TAGS = (); }; };
+		E7C7A3841BE1433A0004C092 /* WorkerLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C7A3831BE1433A0004C092 /* WorkerLib.swift */; settings = {ASSET_TAGS = (); }; };
 		E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F893421B97120600B62257 /* Singleton.swift */; };
 		E7CC7F431B8F4946002AA9A0 /* Patterns.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7CC7F381B8F4946002AA9A0 /* Patterns.framework */; settings = {ASSET_TAGS = (); }; };
 		E7CC7F481B8F4946002AA9A0 /* PatternsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC7F471B8F4946002AA9A0 /* PatternsTests.swift */; };
@@ -37,10 +39,12 @@
 		E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Pods/../build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 		E7194C5E1B8F507A00BE5449 /* Patterns.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Patterns.md; sourceTree = "<group>"; };
 		E719DB4E1B973CB40086A644 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "Pods/../build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
-		E744A26F1B9A1166006E6345 /* Concurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Concurrency.swift; path = Extras/Concurrency.swift; sourceTree = "<group>"; };
 		E744A2711B9A116C006E6345 /* WorkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WorkQueue.swift; path = Extras/WorkQueue.swift; sourceTree = "<group>"; };
+		E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FactoryMethod.swift; sourceTree = "<group>"; };
 		E7945EE31B99A6E800D99085 /* ObjectPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPool.swift; sourceTree = "<group>"; };
 		E7945EE91B99CA2500D99085 /* AdhocTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AdhocTests.playground; sourceTree = "<group>"; };
+		E7C7A3801BE142260004C092 /* Worker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
+		E7C7A3831BE1433A0004C092 /* WorkerLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkerLib.swift; sourceTree = "<group>"; };
 		E7CC7F381B8F4946002AA9A0 /* Patterns.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Patterns.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7CC7F3B1B8F4946002AA9A0 /* Patterns.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Patterns.h; sourceTree = "<group>"; };
 		E7CC7F3D1B8F4946002AA9A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 				E7F893421B97120600B62257 /* Singleton.swift */,
 				E7945EE31B99A6E800D99085 /* ObjectPool.swift */,
 				E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */,
+				E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */,
 			);
 			name = "Creation Patterns";
 			sourceTree = "<group>";
@@ -122,6 +127,8 @@
 		E7945EE81B99B62600D99085 /* Other Patterns */ = {
 			isa = PBXGroup;
 			children = (
+				E7C7A3801BE142260004C092 /* Worker.swift */,
+				E7C7A3831BE1433A0004C092 /* WorkerLib.swift */,
 			);
 			name = "Other Patterns";
 			sourceTree = "<group>";
@@ -137,7 +144,6 @@
 		E7945EEB1B99E31200D99085 /* Speculative */ = {
 			isa = PBXGroup;
 			children = (
-				E744A26F1B9A1166006E6345 /* Concurrency.swift */,
 			);
 			name = Speculative;
 			sourceTree = "<group>";
@@ -373,11 +379,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7F028FC1BDA6D8600F107F7 /* ObjectPoolLib.swift in Sources */,
+				E7C7A3811BE142260004C092 /* Worker.swift in Sources */,
 				E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */,
+				E7C7A3841BE1433A0004C092 /* WorkerLib.swift in Sources */,
 				E7CC7F541B8F4B37002AA9A0 /* Prototype.swift in Sources */,
 				E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */,
 				E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */,
-				E744A2701B9A1166006E6345 /* Concurrency.swift in Sources */,
+				E77398D61BDFDEBE00CF3EE5 /* FactoryMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
