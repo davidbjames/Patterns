@@ -28,7 +28,11 @@ import Foundation
     T I P S   &   C A V E A T S
     • Similar to Command pattern or functional styles. 
     • More reasonable than functional in that it uses a composite type with a name and a clear purpose.
-    • This pattern was "invented" by David James based on similar patterns such as the Thread Pool pattern.
+    • This pattern was created by David James based on similar patterns:
+        • Thread Pool pattern
+        • Gearman http://gearman.org/
+        • NSOperation (job) + NSOperationQueue (worker)
+    • NOTE: Worker pattern is not identical to any of these ^^. Worker pattern has (should have) a simpler design and therefore be more flexible.
 */
 
 /*
@@ -43,38 +47,37 @@ import Foundation
 
     Holds the minimum state required to peform work.
     Generally implemented as a value type (struct or enum)
-    Should have all state passed, have no knowledge outside of the job or how/when it is dispatched.
+    Should have all state passed/stored, have no knowledge outside of the job or how/when it is dispatched.
 */
 public protocol Job {
-    /// Optional Job state tracks things like done'ness and repeatability
-    /// Implementation should make this a constant (let)
-    var state:JobState? { get }
     /// Perform the work
     func perform()
 }
 
 /**
-    Extension to Job
-
-    Manages whether a job can be performed and tracks state.
+    A unit of work, with additional state tracking which supports
+    idempotency, repeatability, max repetitions, etc.
 */
-public extension Job {
-    /// Can the job be performed (again)?
+public protocol StatefulJob : Job {
+    /// Job state tracks things like done'ness and repeatability
+    /// Implementation should make this a constant (let)
+    var state:JobState { get }
+}
+
+/**
+    Extension to StatefulJob
+*/
+public extension StatefulJob {
+    /// Can the job be performed?
     var canPerform:Bool {
-        get {
-            if let state = state {
-                if state.repeatable {
-                    if let maxRepetitions = state.maxRepetitions {
-                        return state.numTimesPerformed < maxRepetitions
-                    } else {
-                        return true // repeatable, no limit
-                    }
-                } else {
-                    return state.numTimesPerformed < 1
-                }
+        if state.repeatable {
+            if let maxRepetitions = state.maxRepetitions {
+                return state.numTimesPerformed < maxRepetitions
             } else {
-                return true // no state object, always perform
+                return true // repeatable, no limit
             }
+        } else {
+            return state.numTimesPerformed < 1
         }
     }
     /**
@@ -86,9 +89,7 @@ public extension Job {
     func internalPerform(perform:()->Void) {
         if canPerform {
             perform()
-            if let state = state {
-                state.numTimesPerformed++
-            }
+            state.numTimesPerformed++
         }
     }
 }
@@ -103,7 +104,8 @@ public extension Job {
 /**
     Reusable Job State class
 
-    If a Job needs JobState handling, specify it in the job's definition
+    This helper class is optional and need only be used
+    in more advanced use-cases. Consider also using NSOperations.
 */
 public class JobState {
     /// Determines if a job can be performed more than once
@@ -119,7 +121,7 @@ public class JobState {
         - Parameter repeatable: is job repeatable?
         - if this is false, subsequent calls to perform() are no-op
     */
-    init(repeatable:Bool = false) {
+    public init(repeatable:Bool = false) {
         self.repeatable = repeatable
     }
     /**
@@ -128,8 +130,8 @@ public class JobState {
         - Parameter maxRepetitions: max number of performances
         - Parameter repeatable: is job repeatable?
     */
-    convenience init(maxRepetitions:Int, repeatable:Bool = true) {
-        self.init(repeatable: repeatable)
+    public convenience init(maxRepetitions:Int) {
+        self.init(repeatable: true)
         self.maxRepetitions = maxRepetitions
     }
 }
@@ -183,41 +185,20 @@ public extension Worker {
     Worker capable of doing several jobs
 */
 public protocol QueuedWorker {
-    /// Array of Jobs
-    var jobs:[Job] { get set }
     /**
         Add a job to the queue
     */
-    mutating func addJob(job: Job)
+    func addJob(job: Job)
+    /**
+        Cancel all jobs
+    */
+    func cancelJobs()
+    /**
+        Delete processed jobs
+    */
+    func flushJobs()
     /**
         Do work for all jobs queued
     */
     func doWork()
 }
-
-/**
-    Queued Worker extension provides a basic implementation.
-
-    Use this vanilla implementation if the goal is solely to reap the benefits
-    of encapsulation and better design without any need for custom dispatching.
-
-    Provide your own overrides using dispatch or operation queues as necessary.
-*/
-public extension QueuedWorker {
-    /**
-        Add a job to the queue
-    */
-    mutating func addJob(job: Job) {
-        jobs.append(job)
-    }
-    /**
-        Do work for all jobs queued on the current thread
-        with no dispatch queues or operations
-    */
-    func doWork() {
-        for job in jobs {
-            job.perform()
-        }
-    }
-}
-

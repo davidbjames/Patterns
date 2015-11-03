@@ -118,12 +118,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         - Publicly settable to override
         - Use WorkQueue wrapper for all dispatch queues
     */
-    public var queue:WorkQueue = WorkQueue.DispatchQueue(dispatch_queue_create("com.chaoticmoon.pool.queues.serial", DISPATCH_QUEUE_SERIAL))
-    
-    // The following v preferred syntax to ^ causes error:
-    // public var queue:WorkQueue = WorkQueue.serialDispatchQueue("com.chaoticmoon.pool.queues.serial")
-    // Error: "unexpectedly found nil while unwrapping an Optional value"
-    // The strange thing is that WorkQueue implementation appears to be identical to the above. May have something to do with the dynamic "withCString" part of it...
+    public var queue:WorkQueue = WorkQueue.serialDispatchQueue("com.chaoticmoon.patterns.ThreadSafePool")
     
     /// Maximum time in seconds that the semaphore should wait before failing to provide Resource
     public var maxTimeOut:Double?
@@ -178,7 +173,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
             // - Continuing guarantees that there is at least 1 resource available on any thread.
             // - The following code should *always* be fired synchronously to coincide with the synchronicity
             //   of semaphores.
-            self.queue >+ { () -> Void in
+            self.queue >+ { 
                 resource = self.pool.checkoutResource()
             }
         }

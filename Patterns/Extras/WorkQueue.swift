@@ -137,19 +137,18 @@ public enum WorkQueue {
 
     /// Allocates a new concurrent dispatch queue with the given name.
     public static func concurrentDispatchQueue(named: String) -> WorkQueue {
-        return newDispatchQueue(named, attr: DISPATCH_QUEUE_CONCURRENT)
+        let queue = named.withCString {
+            dispatch_queue_create($0, DISPATCH_QUEUE_CONCURRENT)
+        }
+        return DispatchQueue(queue)
     }
 
 
     /// Allocates a new serial dispatch queue with the given name.
     public static func serialDispatchQueue(named: String) -> WorkQueue {
-        return newDispatchQueue(named, attr: DISPATCH_QUEUE_SERIAL)
-    }
-
-
-    /// Allocates a new dispatch queue with the given name and attributes.
-    private static func newDispatchQueue(named: String, attr: dispatch_queue_attr_t) -> WorkQueue {
-        let queue = named.withCString { dispatch_queue_create($0, attr) }
+        let queue = named.withCString {
+            dispatch_queue_create($0, DISPATCH_QUEUE_SERIAL)
+        }
         return DispatchQueue(queue)
     }
 
