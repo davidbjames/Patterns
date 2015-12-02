@@ -19,20 +19,20 @@ import Foundation
 
     B E N E F I T S
     • Keeps common or repeatable units of work encapsulated and hidden from the application.
-    • Provides a consistent (and encapsulated) method for dispatching work.
-    • Is "stateless" as each job should be passed or initialized with all the state it needs to perform the job.
+    • Provides a consistent interface for dispatching work.
+    • Encapsulates state in Job and Worker objects.
 
     I M P L E M E N T A T I O N
-    •
+    • 
 
     T I P S   &   C A V E A T S
-    • Similar to Command pattern or functional styles. 
-    • More reasonable than functional in that it uses a composite type with a name and a clear purpose.
+    • Jobs should not reference outside state.
+    • Jobs are similar to Command pattern in that they use composite types to enapsulate "functions".
     • This pattern was created by David James based on similar patterns:
         • Thread Pool pattern
         • Gearman http://gearman.org/
         • NSOperation (job) + NSOperationQueue (worker)
-    • NOTE: Worker pattern is not identical to any of these ^^. Worker pattern has (should have) a simpler design and therefore be more flexible.
+    • NOTE: Worker pattern is not identical to any of these ^^. Worker pattern has a simpler design.
 */
 
 /*
@@ -47,7 +47,8 @@ import Foundation
 
     Holds the minimum state required to peform work.
     Generally implemented as a value type (struct or enum)
-    Should have all state passed/stored, have no knowledge outside of the job or how/when it is dispatched.
+    Should have all state passed/stored, and have no knowledge outside of the job
+        or how/when it is dispatched.
 */
 public protocol Job {
     /// Perform the work
@@ -156,24 +157,6 @@ public protocol Worker {
     func doWork(job: Job)
 }
 
-/**
-    Worker extension provides a basic implementation.
-
-    Use this vanilla implementation if the goal is solely to reap the benefits
-    of encapsulation and better design without any need for custom dispatching.
-
-    Provide your own overrides using dispatch or operation queues as necessary.
-*/
-public extension Worker {
-    /**
-        Do work for a single job on the current thread
-        with no dispatch queues or operations.
-    */
-    func doWork(job: Job) {
-        job.perform()
-    }
-}
-
 /*
        ____                       ___      __         __
       / __ \__ _____ __ _____ ___/ / | /| / /__  ____/ /_____ ____
@@ -202,3 +185,23 @@ public protocol QueuedWorker {
     */
     func doWork()
 }
+
+
+/**
+    Worker extension provides a basic implementation.
+ 
+    Use this vanilla implementation if the goal is solely to reap the benefits
+    of encapsulation and better design without any need for custom dispatching.
+ 
+    Provide your own overrides using dispatch or operation queues as necessary.
+ */
+public extension Worker {
+    /**
+        Do work for a single job on the current thread
+        with no dispatch queues or operations.
+     */
+    func doWork(job: Job) {
+        job.perform()
+    }
+}
+

@@ -40,6 +40,7 @@ import Foundation
     and designated initializer should be private.
 */
 public protocol Singleton {
+    /// Single instance
     static var instance:Self { get }
-    // in practice this s/b let
+    // in practice this s/b a constant (i.e. let)
 }
