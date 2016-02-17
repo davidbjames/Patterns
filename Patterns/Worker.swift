@@ -16,6 +16,7 @@ import Foundation
 
     D E F I N I T I O N
     • Encapsulate discrete units of work in "jobs" and allow "workers" to perform those jobs.
+    • Workers only do jobs that are handed to it. They never do their own work.
 
     B E N E F I T S
     • Keeps common or repeatable units of work encapsulated and hidden from the application.

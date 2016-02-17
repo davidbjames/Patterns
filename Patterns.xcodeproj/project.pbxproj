@@ -24,6 +24,7 @@
 		E7E912011BFA18E8000DC43B /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E912001BFA18E8000DC43B /* ServiceLocator.swift */; };
 		E7E912031BFA2CF0000DC43B /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E912021BFA2CF0000DC43B /* DependencyInjection.swift */; };
 		E7F028FC1BDA6D8600F107F7 /* ObjectPoolLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */; };
+		E7F3FC6A1C3D3E9B001B56BC /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F3FC691C3D3E9B001B56BC /* Builder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		E7E912001BFA18E8000DC43B /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		E7E912021BFA2CF0000DC43B /* DependencyInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPoolLib.swift; sourceTree = "<group>"; };
+		E7F3FC691C3D3E9B001B56BC /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		E7F893421B97120600B62257 /* Singleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		EE4D6B3653F1EB9A96F62C6C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 				E7F028FB1BDA6D8600F107F7 /* ObjectPoolLib.swift */,
 				E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */,
 				E7C297F61C034C7D002C8508 /* AbstractFactory.swift */,
+				E7F3FC691C3D3E9B001B56BC /* Builder.swift */,
 			);
 			name = "Creation Patterns";
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */,
 				E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */,
 				E77398D61BDFDEBE00CF3EE5 /* FactoryMethod.swift in Sources */,
+				E7F3FC6A1C3D3E9B001B56BC /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -65,13 +65,10 @@ import Foundation
     Cons: Little control over the state of the copied objects
 */
 public protocol Prototype : NSCopying, NSObjectProtocol {
-    /// Implementations should define this at the top of the class
-    /// e.g.: typealias Prototype = MyPrototypeClass
-    typealias Prototype
     /// Copy over properties from prototype to new instance
-    init(clone: Prototype)
-    /// Copy over properties and call clone/deepClone on properties that conform to *Prototype
-    init(deepClone: Prototype)
+    init(clone: Self)
+    /// Copy over properties and call clone/deepClone on properties that conform to *Prototype*
+    init(deepClone: Self)
 }
 
 
@@ -84,18 +81,18 @@ public protocol Prototype : NSCopying, NSObjectProtocol {
 */
 
 /**
-    Anonymous prototype (a specialization of Prototype) is used when the concrete
-    type is not known, for example, when passing to a class that accepts a generic 
-    "Prototype" which can't be initialized since the concrete type is not known.
+    Anonymous prototype is used when the concrete type is not known, 
+    for example, when passing to a class that accepts a generic prototype
+    which can't be initialized since the concrete type is not known.
 
     Pros: More abstract and therefore more flexible for loosely coupled systems.
-    Cons: Same as Prototype + larger interface (i.e. use basic Prototype in most cases)
+    Cons: Not the "correct" way of making a copy i.e. does not use copy constructor.
 */
-public protocol AnonymousPrototype : Prototype {
+public protocol AnonymousPrototype {
     // Clone method. Use this when the concrete type is not known.
-    func clone() -> Prototype
+    func clone() -> Self
     // Deep clone method. Use this when the concrete type is not know.
-    func deepClone() -> Prototype
+    func deepClone() -> Self
 }
 
 /*
@@ -117,9 +114,6 @@ public protocol AnonymousPrototype : Prototype {
     to create state.
 */
 public protocol DataPrototype : NSCopying, NSObjectProtocol  {
-    // Implementations should define this at the top of the class
-    // e.g.: typealias Prototype = MyPrototypeClass
-    typealias Prototype
     // Copy over properties from prototype to new instance
     // Failable if data cannot be converted over to prototype
     init?(clone: Dictionary<String, AnyObject>)
