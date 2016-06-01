@@ -47,7 +47,7 @@ import Foundation
 */
 public protocol ObjectPool {
     /// Generic type. Can be any type (not only objects). Use ObjectPoolItem as necessary.
-    typealias Resource
+    associatedtype Resource
     /// Check out a resource from the pool if one is available.
     /// This is usually blocking (sync) but doesn't have to be.
     func checkoutResource() -> Resource?

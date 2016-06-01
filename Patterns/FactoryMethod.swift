@@ -71,9 +71,9 @@ public protocol StaticFactory : Factory {
     /// Some context object / tuple that provides the factory with 
     /// enough information to make a decision without being explicit.
     /// See also "general rule" above.
-    typealias FactoryContext
+    associatedtype FactoryContext
     /// Some known interface
-    typealias KnownInterface
+    associatedtype KnownInterface
     /// Single create method which takes context and returns the known interface
     static func create(context: FactoryContext) -> KnownInterface?
 }
@@ -98,7 +98,7 @@ public protocol StaticFactory : Factory {
 */
 public protocol StatefulFactory : Factory {
     /// Some known interface
-    typealias KnownInterface
+    associatedtype KnownInterface
     /// Single create method which returns the known interface
     func create() -> KnownInterface?
 }

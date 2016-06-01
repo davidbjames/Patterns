@@ -328,7 +328,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
                     // that the max resources will never be reached, which can be a good thing.
                     resource = self.resourceFactory()
                     if resource != nil {
-                        self.resourcesCreated++
+                        self.resourcesCreated += 1
                     }
                 } else {
                     resource = self.pool.checkoutResource() // FIFO

@@ -74,9 +74,9 @@ public protocol FactoryProducer {
     /// Context object / tuple that provides the factory with enough
     /// information to make a decision of which concrete factory to
     /// return. See also "general rule" in Factory Method pattern
-    typealias FactoryContext
+    associatedtype FactoryContext
     /// Associated Factory that is returned
-    typealias AbstractFactory
+    associatedtype AbstractFactory
     /// Single getFactory method for obtaining the correct concrete factory.
     /// - parameter: optional context that provides information in
     ///     the decision making process for what factory to return

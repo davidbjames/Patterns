@@ -91,7 +91,7 @@ public extension StatefulJob {
     func internalPerform(perform:()->Void) {
         if canPerform {
             perform()
-            state.numTimesPerformed++
+            state.numTimesPerformed += 1
         }
     }
 }
