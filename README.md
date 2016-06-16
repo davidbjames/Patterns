@@ -8,26 +8,26 @@ What is it?
 
 The Patterns Project is a repository for *pattern protocols*. 
 
-*Pattern protocols* are interfaces that describe the semantics of design patterns. 
+*Pattern protocols* are interfaces/protocols that describe the semantics of design patterns. 
 
-In plain English ➡️ **Help developers learn and implement design patterns by simply conforming to protocols**. 
+In plain English ➡️ **The Patterns Project is aimed at helping developers learn and implement design patterns by simply conforming to protocols**. 
 
 Why do this?
 ------------
 
-Typically, design patterns are implicitly defined in code, which makes it hard to know *what* pattern is being used or *if* a pattern is being used at all! This is not helpful to communicating intent in programs, and has been an impediment to learning design patterns, for decades. 
+In most cases, design patterns are implicitly defined in code, which makes it hard to know what pattern is being used or even if a pattern is being used at all! This is not helpful for communicating intent in programs, and has been the main impediment to learning design patterns for decades. 
 
-The Patterns Project attempts to overcome this shortcoming by simply **making design patterns explicitly named** via *pattern protocols*. 
+The Patterns Project is all about overcoming this communication gap by simply **making design patterns explicitly named in code** via pattern protocols. 
 
 Instead of design patterns remaining obscure, they become obvious, to implementers and maintainers. 
 
 Examples
 --------
 
-Let's show a few patterns, and see how they become obvious for: 
+Let's show a few patterns, and see how they become obvious for the: 
 
-* the *implementer* because the methods are described in the protocol 
-* the *maintainer* because the class/struct is named according to the pattern.
+* *Implementer*, because the methods are described in the protocol, and for the
+* *Maintainer*, because the class/struct is named according to the pattern.
 
 *** 
 
@@ -53,28 +53,22 @@ Implementing is easier than falling off a bicycle. You just implement the requir
 ~~~Swift
 class HttpRequest : NSObject, Prototype { 
 
-    var auth: Authentication // each request requires authentication
+    var auth: Authentication 
 
     init(auth: Authentication) {
         self.auth = auth
     }
-
-    // Required 3 methods to implement Prototype:
 
     required convenience init(clone: HttpRequest) {
         self.init(auth: clone.auth)
     }
 
     required convenience init(deepClone: HttpRequest) {
-        // For deep clone create a new instance of the 
-        // associated Authentication object and call it's deepClone 
-        // initializer so it can further clone downwards.
         let auth = Authentication(deepClone: deepClone.auth)
         self.init(auth: auth)
     }
 
     @objc func copyWithZone(zone: NSZone) -> AnyObject {
-        // Override copy to use custom clone or deepClone method
         return HttpRequest(clone: self)
     }
     
@@ -82,7 +76,7 @@ class HttpRequest : NSObject, Prototype {
 }
 ~~~
 
-##### Client Code:
+##### Calling code:
 
 ...and *now*, the client code simple consumes that interface. The implementer is not kept in the dark. They know they're dealing with the **Prototype** pattern.
 
@@ -138,7 +132,7 @@ struct MyWorker : Worker {
 }
 ~~~
 
-##### Client code:
+##### Calling code:
 
 ~~~Swift
 MyWorker().doWork(MyJob())
@@ -146,7 +140,7 @@ MyWorker().doWork(MyJob())
 
 Again, a contrived example, but hopefully the idea is sinking in. 🙂
 
-> NOTE: There is no **Worker** pattern in the original Go4 design patterns. That's OK! The Patterns Project is totally open ended. Yes, we want to cover the original patterns, but we also want to update those patterns to work better with modern language paradigms *and* to create brand new patterns along the way.
+> NOTE: There is no **Worker** pattern in the original Go4 design patterns. That's OK! The Patterns Project is about any pattern, not just the formal patterns. The project goals are essentially, cover the original patterns, update patterns to work better with modern paradigms and create brand new patterns.
 
 ***
 
@@ -158,24 +152,18 @@ One more example. Something a little more powerful.
 
 ~~~Swift
 public protocol ObjectPool {
-    /// Generic type. Can be any type (not only objects). Use ObjectPoolItem as necessary.
+
     associatedtype Resource
-    /// Check out a resource from the pool if one is available.
-    /// This is usually blocking (sync) but doesn't have to be.
+
     func checkoutResource() -> Resource?
-    
-    /// Return a resource back to the pool.
-    /// This is usually non-blocking (async).
+
     func checkin(resource: Resource)
     
-    /// Process all resources currently in the pool.
-    /// Be aware the pool may change from what is passed to this method,
-    /// if this method is called asynchronously.
     func processPool(callback: [Resource] -> Void)
 }
 
 public protocol ObjectPoolItem {
-    /// Reset object state so it can be reused
+
     func prepareForReuse()
 }
 ~~~
@@ -185,47 +173,40 @@ public protocol ObjectPoolItem {
 ~~~Swift
 public class DefaultPool<Resource> : ObjectPool {
 
-    /// Core array of resources. Always private. Use protocol methods to access.
     private var resources:[Resource]
 
-    /// Initialize empty pool
     public init() {
         self.resources = []
     }
 
-    /// Initialize with initial resources (eager method)
     public convenience init(resources: [Resource]) {
         self.init()
         self.resources = resources
     }
 
-    /// Check out a resource from the pool if one is available.
     public func checkoutResource() -> Resource? {
         return isEmpty() ? nil : resources.removeAtIndex(0)
     }
 
-    /// Check a resource back into the pool.
     public func checkin(resource: Resource) {
 
-        // Allow objects to prepare for reuse.
         if resource is ObjectPoolItem {
             (resource as! ObjectPoolItem).prepareForReuse()
         }
         resources.append(resource)
     }
 
-    /// Process all resources currently in the pool.
     public func processPool(callback: [Resource] -> Void) {
         callback(self.resources)
     }
 }
 ~~~
 
-(The project includes "eager" and "lazy" variations on this that use background threads and semaphores, but we'll keep it simple for now.)
+The project includes "eager" and "lazy" variations on this that use background threads and semaphores, but we'll keep it simple for now.
 
-##### Client Code:
+##### Calling code:
 
-Notice how we can combine patterns: **Object Pool** + **Prototype**
+Notice how we can combine patterns: **Object Pool** + **Prototype**. This is something you'll see a lot in the Patterns Project.
 
 ~~~Swift
 class Tool : NSObject, ObjectPoolItem, AnonymousPrototype {
@@ -245,14 +226,9 @@ class Tool : NSObject, ObjectPoolItem, AnonymousPrototype {
         self.type = type
     }
 
-    // ObjectPoolItem
-
     func prepareForReuse() {
         // prepare prototype for re-use
-        // reset state etc
     }
-
-    // AnonymousPrototype
 
     func clone() -> AnonymousPrototype {
         return Tool(type: self.type)
