@@ -2,8 +2,7 @@
 //  Builder.swift
 //  Patterns
 //
-//  Created by David James on 1/6/16.
-//  Copyright © 2016 Chaotic Moon. All rights reserved.
+//  Copyright © 2016 David James. All rights reserved.
 //
 
 import Foundation

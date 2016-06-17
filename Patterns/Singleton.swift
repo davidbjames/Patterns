@@ -2,8 +2,7 @@
 //  Singleton.swift
 //  Patterns
 //
-//  Created by David James on 9/2/15.
-//  Copyright © 2015 Chaotic Moon. All rights reserved.
+//  Copyright © 2016 David James. All rights reserved.
 //
 
 import Foundation

@@ -2,8 +2,7 @@
 //  ServiceLocator.swift
 //  Patterns
 //
-//  Created by David James on 11/16/15.
-//  Copyright © 2015 Chaotic Moon. All rights reserved.
+//  Copyright © 2016 David James. All rights reserved.
 //
 
 import Foundation
