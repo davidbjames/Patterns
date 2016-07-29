@@ -117,7 +117,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         - Publicly settable to override
         - Use WorkQueue wrapper for all dispatch queues
     */
-    public var queue:WorkQueue = WorkQueue.serialDispatchQueue("com.chaoticmoon.patterns.ThreadSafePool")
+    public var queue:WorkQueue = WorkQueue.serialDispatchQueue("com.davidbjames.patterns.ThreadSafePool")
     
     /// Maximum time in seconds that the semaphore should wait before failing to provide Resource
     public var maxTimeOut:Double?
