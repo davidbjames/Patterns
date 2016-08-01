@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6EBB4C5E276DB7C9B05F3B21 /* libPods-PatternsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C85476212870A48F92EF17 /* libPods-PatternsTests.a */; };
-		DCFF8AB6C97477C0C0B6803B /* libPods-Patterns.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFE1D70D60775969870A21BB /* libPods-Patterns.a */; };
+		267C3D0FEEA31B1E5B96F112 /* Pods_Patterns.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0D3BAE50828698B14EFCD9 /* Pods_Patterns.framework */; };
+		60B86270930B42DCCC161E7C /* Pods_PatternsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3A4C4B6B20602376C24915 /* Pods_PatternsTests.framework */; };
 		E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A2711B9A116C006E6345 /* WorkQueue.swift */; };
 		E77398D61BDFDEBE00CF3EE5 /* FactoryMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */; };
 		E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7945EE31B99A6E800D99085 /* ObjectPool.swift */; };
@@ -40,10 +40,10 @@
 		130D5EF35F1B688384E08BD6 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17487C2A1585BA6772047D62 /* Pods-PatternsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatternsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PatternsTests/Pods-PatternsTests.release.xcconfig"; sourceTree = "<group>"; };
 		236779FC101FCBF0B12EC825 /* Pods-PatternsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatternsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PatternsTests/Pods-PatternsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3E0D3BAE50828698B14EFCD9 /* Pods_Patterns.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Patterns.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C3A4C4B6B20602376C24915 /* Pods_PatternsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PatternsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E1C85064368E1681AF76778 /* Pods-Patterns.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Patterns.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Patterns/Pods-Patterns.debug.xcconfig"; sourceTree = "<group>"; };
-		99C85476212870A48F92EF17 /* libPods-PatternsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatternsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE89A2A1018418E1E89EB77 /* Pods-Patterns.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Patterns.release.xcconfig"; path = "Pods/Target Support Files/Pods-Patterns/Pods-Patterns.release.xcconfig"; sourceTree = "<group>"; };
-		CFE1D70D60775969870A21BB /* libPods-Patterns.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Patterns.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Pods/../build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 		E7194C5E1B8F507A00BE5449 /* Patterns.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Patterns.md; sourceTree = "<group>"; };
 		E719DB4E1B973CB40086A644 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "Pods/../build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCFF8AB6C97477C0C0B6803B /* libPods-Patterns.a in Frameworks */,
+				267C3D0FEEA31B1E5B96F112 /* Pods_Patterns.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7CC7F431B8F4946002AA9A0 /* Patterns.framework in Frameworks */,
-				6EBB4C5E276DB7C9B05F3B21 /* libPods-PatternsTests.a in Frameworks */,
+				60B86270930B42DCCC161E7C /* Pods_PatternsTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +95,8 @@
 				E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */,
 				E719DB4E1B973CB40086A644 /* Mantle.framework */,
 				130D5EF35F1B688384E08BD6 /* Pods.framework */,
-				CFE1D70D60775969870A21BB /* libPods-Patterns.a */,
-				99C85476212870A48F92EF17 /* libPods-PatternsTests.a */,
+				3E0D3BAE50828698B14EFCD9 /* Pods_Patterns.framework */,
+				7C3A4C4B6B20602376C24915 /* Pods_PatternsTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
