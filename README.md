@@ -331,6 +331,8 @@ Add these lines to your Podfile:
 source 'https://github.com/davidbjames/CocoaPods-Specs.git'
 ~~~
 
+Note: until this is out of Alpha stage, I'll use my private spec repo, which means you will also need to source the [CocoaPods spec repo](https://github.com/CocoaPods/Specs) in your Podfile, in order for other dependencies to load. Sorry, for now.
+
 ~~~Ruby
 pod 'Patterns'
 ~~~
