@@ -317,6 +317,24 @@ Notice how the implementation code and the calling code (in ToolRentalStore) cre
 
 This makes it easier for everyone to embrace and learn patterns.
 
+Examples to the Power of Wow
+----------------------------
+
+To really see the pattern protocols in action, visit [Patterns Examples](https://github.com/davidbjames/PatternsExamples) where you'll find Swift Playgrounds with all of the patterns found in this project.
+
+CocoaPods Install
+-----------------
+
+Add these lines to your Podfile:
+
+~~~Ruby
+source 'https://github.com/davidbjames/CocoaPods-Specs.git'
+~~~
+
+~~~Ruby
+pod 'Patterns'
+~~~
+
 ***
 
 Project Status
