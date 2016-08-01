@@ -1,4 +1,4 @@
-![ViewQuery](./web/PatternsProjectBanner1.png) 
+![ViewQuery](./web/PatternsProjectBanner.png) 
 
 Patterns Project
 ================
@@ -6,16 +6,16 @@ Patterns Project
 What is it?
 -----------
 
-The Patterns Project is a repository for *pattern protocols*. 
+The Patterns Project is a repository of *pattern protocols*. (This is a Swift project, but could easily be ported to any language.)
 
-*Pattern protocols* are interfaces/protocols that describe the semantics of design patterns. 
+*Pattern protocols* are interfaces that describe the semantics of design patterns. 
 
-In plain English ➡️ **The Patterns Project is aimed at helping developers learn and implement design patterns by simply conforming to protocols**. 
+**The Patterns Project is aimed at helping developers learn and use design patterns by simply conforming to protocols**. 
 
 Why do this?
 ------------
 
-In most cases, design patterns are implicitly defined in code, which makes it hard to know what pattern is being used or even if a pattern is being used at all! This is not helpful for communicating intent in programs, and has been the main impediment to learning design patterns for decades. 
+In most cases, design patterns are implicitly defined in code with no semantics describing the pattern itself, making it hard to know what pattern is being used or even if a pattern is being used at all! This is not helpful for communicating intent in programs, and has been the main blocker to learning design patterns for decades. 
 
 The Patterns Project is all about overcoming this communication gap by simply **making design patterns explicitly named in code** via pattern protocols. 
 
@@ -48,7 +48,7 @@ public protocol Prototype : NSCopying, NSObjectProtocol {
 
 ##### Implementation:
 
-Implementing is easier than falling off a bicycle. You just implement the required methods.
+Implementing is easier than falling off a bicycle. You just implement the required `init` methods.
 
 ~~~Swift
 class HttpRequest : NSObject, Prototype { 
@@ -140,7 +140,7 @@ MyWorker().doWork(MyJob())
 
 Again, a contrived example, but hopefully the idea is sinking in. 🙂
 
-> NOTE: There is no **Worker** pattern in the original Go4 design patterns. That's OK! The Patterns Project is about any pattern, not just the formal patterns. The project goals are essentially, cover the original patterns, update patterns to work better with modern paradigms and create brand new patterns.
+> NOTE: There is no **Worker** pattern in the original Go4 design patterns. That's OK! The Patterns Project is about any pattern, not just the formal patterns. The project goals are essentially: cover the original patterns, update those patterns to work better with modern paradigms and create brand new patterns.
 
 ***
 
@@ -312,3 +312,16 @@ for i in 1 ... 35 { // 35 rentals
 
 dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER)
 ~~~
+
+Notice how the implementation code and the calling code (in ToolRentalStore) create and consume the Object Pool pattern via a consistent interface, `checkinResource` and `checkoutResource`. New developers to the project can easily know that the Object Pool pattern is being used because the types are named accordingly.
+
+This makes it easier for everyone to embrace and learn patterns.
+
+***
+
+Project Status
+--------------
+
+At this time, the project contains 90% of the [creational patterns](https://en.wikipedia.org/wiki/Creational_pattern). Due to time constraints I have been unable to finish the remaining patterns (including structural and behavioral). I hope to pick that up again soon. Honestly, I'd like the first stab at getting all the original patterns represented before opening this to contributions, but I'd be interested in hearing any feedback or proposals via the issue navigator!
+
+David James
