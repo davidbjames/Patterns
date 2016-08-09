@@ -79,30 +79,12 @@ public enum WorkQueue {
             return operationQueue(Foundation.OperationQueue.main)
         }
     }
-
     
-    /// Gets the high priority global dispatch queue.
-    public static var HighPriority: WorkQueue {
-        get {
-            let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high)
-            return dispatchQueue(queue)
-        }
-    }
-
     
     /// Gets the default priority global dispatch queue.
     public static var DefaultPriority: WorkQueue {
         get {
-            let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
-            return dispatchQueue(queue)
-        }
-    }
-
-
-    /// Gets the low priority global dispatch queue.
-    public static var LowPriority: WorkQueue {
-        get {
-            let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.low)
+            let queue = DispatchQueue.global(qos: .default)
             return dispatchQueue(queue)
         }
     }
@@ -111,11 +93,33 @@ public enum WorkQueue {
     /// Gets the background priority global dispatch queue.
     public static var Background: WorkQueue {
         get {
-            let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background)
+            let queue = DispatchQueue.global(qos: .background)
+            return dispatchQueue(queue)
+        }
+    }
+    
+    
+    /*
+     
+    // TODO: map these to appropriate quality of service classes
+
+    /// Gets the high priority global dispatch queue.
+    public static var HighPriority: WorkQueue {
+        get {
+            let queue = DispatchQueue.global(qos: .default)
             return dispatchQueue(queue)
         }
     }
 
+    /// Gets the low priority global dispatch queue.
+    public static var LowPriority: WorkQueue {
+        get {
+            let queue = DispatchQueue.global(qos: .default)
+            return dispatchQueue(queue)
+        }
+    }
+
+    */
 
     /// Attempts to get the current NSOperationQueue and return it as a
     /// WorkQueue. Returns nothing if unsuccessful.
@@ -132,26 +136,19 @@ public enum WorkQueue {
     
     // ------------------------------------
     // Parameterized factories for standard
-    // dispatch queues (concurrent and serial)
+    // dispatch queues (background and serial)
 
-
-    /// Allocates a new concurrent dispatch queue with the given name.
-    public static func concurrentDispatchQueue(_ named: String) -> WorkQueue {
-        let queue = named.withCString {
-            DispatchQueue(label: $0, qos: DispatchQueue.Attributes.concurrent)
-        }
-        return dispatchQueue(queue)
+    /// Allocates a new background dispatch queue with the given name.
+    public static func backgroundDispatchQueue(_ named: String) -> WorkQueue {
+        return dispatchQueue(DispatchQueue(label: named, qos: .background))
     }
 
 
     /// Allocates a new serial dispatch queue with the given name.
     public static func serialDispatchQueue(_ named: String) -> WorkQueue {
-        let queue = named.withCString {
-            DispatchQueue(label: $0, qos: DispatchQueue.Attributes.serial)
-        }
-        return dispatchQueue(queue)
+        return dispatchQueue(DispatchQueue(label: named)) // .default
     }
-
+    
 
     // ------------------------------------
     // Public methods for firing a block of work
@@ -315,10 +312,10 @@ public func === (left: WorkQueue, right: WorkQueue) -> Bool {
     // or baring that (for immediate dispatches) check if both threads are the same.
     // (Understand that immediate is not as useful, both in use and comparison.)
     
-    if let leftQueue = leftQueue, rightQueue = rightQueue {
+    if let leftQueue = leftQueue, let rightQueue = rightQueue {
         return leftQueue === rightQueue
     } else {
-        if let leftThread = leftThread, rightThread = rightThread {
+        if let leftThread = leftThread, let rightThread = rightThread {
             return leftThread === rightThread
         } else {
             return false
@@ -331,7 +328,7 @@ public func === (left: WorkQueue, right: WorkQueue) -> Bool {
 /// WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.async(block)
     return queue
 }
@@ -341,7 +338,7 @@ public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// WorkQueue (i.e., this will not return until the block has finished).
 ///
 /// Returns the queue to permit chaining.
-public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.sync(block)
     return queue
 }
@@ -351,7 +348,7 @@ public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// a barrier on a WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.asyncWithBarrier(block)
     return queue
 }
@@ -362,7 +359,7 @@ public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// finished).
 ///
 /// Returns the queue to permit chaining.
-public func >|+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >|+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.syncWithBarrier(block)
     return queue
 }

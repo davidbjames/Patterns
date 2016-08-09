@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		267C3D0FEEA31B1E5B96F112 /* Pods_Patterns.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0D3BAE50828698B14EFCD9 /* Pods_Patterns.framework */; };
 		60B86270930B42DCCC161E7C /* Pods_PatternsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3A4C4B6B20602376C24915 /* Pods_PatternsTests.framework */; };
-		E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E744A2711B9A116C006E6345 /* WorkQueue.swift */; };
+		E704307D1D5A580000218B6F /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E704307C1D5A580000218B6F /* WorkQueue.swift */; };
 		E77398D61BDFDEBE00CF3EE5 /* FactoryMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */; };
 		E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7945EE31B99A6E800D99085 /* ObjectPool.swift */; };
 		E7C297F71C034C7D002C8508 /* AbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C297F61C034C7D002C8508 /* AbstractFactory.swift */; };
@@ -44,10 +44,10 @@
 		7C3A4C4B6B20602376C24915 /* Pods_PatternsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PatternsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E1C85064368E1681AF76778 /* Pods-Patterns.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Patterns.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Patterns/Pods-Patterns.debug.xcconfig"; sourceTree = "<group>"; };
 		ACE89A2A1018418E1E89EB77 /* Pods-Patterns.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Patterns.release.xcconfig"; path = "Pods/Target Support Files/Pods-Patterns/Pods-Patterns.release.xcconfig"; sourceTree = "<group>"; };
+		E704307C1D5A580000218B6F /* WorkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WorkQueue.swift; path = Extras/WorkQueue.swift; sourceTree = "<group>"; };
 		E70BB4CF1BDA507100A4B1F0 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Pods/../build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 		E7194C5E1B8F507A00BE5449 /* Patterns.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Patterns.md; sourceTree = "<group>"; };
 		E719DB4E1B973CB40086A644 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = "Pods/../build/Debug-iphoneos/Mantle.framework"; sourceTree = "<group>"; };
-		E744A2711B9A116C006E6345 /* WorkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WorkQueue.swift; path = Extras/WorkQueue.swift; sourceTree = "<group>"; };
 		E77398D51BDFDEBE00CF3EE5 /* FactoryMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FactoryMethod.swift; sourceTree = "<group>"; };
 		E7945EE31B99A6E800D99085 /* ObjectPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectPool.swift; sourceTree = "<group>"; };
 		E7945EE91B99CA2500D99085 /* AdhocTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AdhocTests.playground; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		E7945EEE1B99F25700D99085 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				E744A2711B9A116C006E6345 /* WorkQueue.swift */,
+				E704307C1D5A580000218B6F /* WorkQueue.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -451,8 +451,8 @@
 				E7C297F71C034C7D002C8508 /* AbstractFactory.swift in Sources */,
 				E7E912031BFA2CF0000DC43B /* DependencyInjection.swift in Sources */,
 				E7C7A3811BE142260004C092 /* Worker.swift in Sources */,
-				E744A2721B9A116C006E6345 /* WorkQueue.swift in Sources */,
 				E7C7A3841BE1433A0004C092 /* WorkerLib.swift in Sources */,
+				E704307D1D5A580000218B6F /* WorkQueue.swift in Sources */,
 				E7CC7F541B8F4B37002AA9A0 /* Prototype.swift in Sources */,
 				E7CB00D41B9722C3005E9B84 /* Singleton.swift in Sources */,
 				E7945EE41B99A6E800D99085 /* ObjectPool.swift in Sources */,

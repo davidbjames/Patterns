@@ -145,7 +145,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         - Parameter pool: The already-loaded pool (eager) or empty pool (lazy)
         - Parameter semaphore: The initialized semaphore with num items in pool (eager) or max items (lazy)
     */
-    public required init(pool:DefaultPool<Resource>, semaphore:DispatchSemaphore) {
+    public init(pool:DefaultPool<Resource>, semaphore:DispatchSemaphore) {
         self.pool = pool
         self.semaphore = semaphore
     }
@@ -159,7 +159,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
     */
     public func checkoutResource() -> Resource? {
         var resource:Resource?
-        if self.semaphore.wait(timeout: maxDispatchTime) == 0 {
+        if self.semaphore.wait(timeout: maxDispatchTime) == .success {
             // - This ^^ function returns 0 when the semaphore value is > 0 (success). This may be true immediately if,
             //       - the pool is started with semaphore greater than 0
             //       - the semaphore is currently 0 and it has been signaled changing it's value to 1.
@@ -317,7 +317,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
     */
     public override func checkoutResource() -> Resource? {
         var resource:Resource?
-        if semaphore.wait(timeout: maxDispatchTime) == 0 {
+        if semaphore.wait(timeout: maxDispatchTime) == .success {
             // See EagerPool re: this condition ^^
             self.queue >+ { () -> Void in
                 if self.pool.isEmpty() && self.canCreateAnotherResource() {
