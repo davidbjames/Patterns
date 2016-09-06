@@ -1,5 +1,6 @@
 ![ViewQuery](./web/PatternsProjectBanner.png) 
-**Swift 3.0**
+
+<a href="https://swift.org"><img src="https://camo.githubusercontent.com/7b4af539c919ff517d11b45b8afd97cdc85b2352/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f73776966742d332e302d6f72616e67652e737667" alt="Swift 3.0" data-canonical-src="https://img.shields.io/badge/swift-3.0-orange.svg" style="max-width:100%;"></a>
 Patterns Project
 ================
 
