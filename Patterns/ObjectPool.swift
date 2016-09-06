@@ -52,11 +52,11 @@ public protocol ObjectPool {
     func checkoutResource() -> Resource?
     /// Return a resource back to the pool.
     /// This is usually non-blocking (async).
-    func checkin(resource: Resource)
+    func checkin(_ resource: Resource)
     /// Process all resources currently in the pool.
     /// Be aware the pool may change from what is passed to this method,
     /// if this method is called asynchronously.
-    func processPool(callback: [Resource] -> Void)
+    func processPool(_ callback: @escaping ([Resource]) -> Void)
 }
 
 /**

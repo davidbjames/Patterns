@@ -34,7 +34,7 @@ import Foundation
 public class DefaultPool<Resource> : ObjectPool {
     
     /// Core array of resources. Always private. Use protocol methods to access.
-    private var resources:[Resource]
+    fileprivate var resources:[Resource]
     
     /**
         Initialize empty pool.
@@ -59,7 +59,7 @@ public class DefaultPool<Resource> : ObjectPool {
         - Returns: Resource if available
     */
     public func checkoutResource() -> Resource? {
-        return isEmpty() ? nil : resources.removeAtIndex(0)
+        return isEmpty() ? nil : resources.remove(at: 0)
     }
     
     /**
@@ -67,7 +67,7 @@ public class DefaultPool<Resource> : ObjectPool {
     
         - Parameter resource: generic Resource
     */
-    public func checkin(resource: Resource) {
+    public func checkin(_ resource: Resource) {
         
         // Allow objects to prepare for reuse.
         if resource is ObjectPoolItem {
@@ -82,7 +82,7 @@ public class DefaultPool<Resource> : ObjectPool {
         Be aware the pool may change from what is passed to this method,
         if this method is called asynchronously.
     */
-    public func processPool(callback: [Resource] -> Void) {
+    public func processPool(_ callback: @escaping ([Resource]) -> Void) {
         callback(self.resources)
     }
     
@@ -123,19 +123,19 @@ public class ThreadSafePool<Resource> : ObjectPool {
     public var maxTimeOut:Double?
     
     /// The pool
-    private let pool:DefaultPool<Resource>
+    fileprivate let pool:DefaultPool<Resource>
     
     /// Semaphore used to make the pool (thread) safe,
     /// i.e. the pool will only attempt returning a resource if one is available
-    private let semaphore:dispatch_semaphore_t
+    fileprivate let semaphore:DispatchSemaphore
     
     /// Maximum time in seconds that the semaphore should wait before failing to provide Resource
     /// Default is to block forever.
-    private var maxDispatchTime:dispatch_time_t {
+    fileprivate var maxDispatchTime:DispatchTime {
         if let maxTimeOut = maxTimeOut {
-            return dispatch_time(DISPATCH_TIME_NOW, Int64(maxTimeOut * Double(NSEC_PER_SEC)))
+            return DispatchTime.now() + Double(Int64(maxTimeOut * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         } else {
-            return DISPATCH_TIME_FOREVER
+            return DispatchTime.distantFuture
         }
     }
     
@@ -145,7 +145,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         - Parameter pool: The already-loaded pool (eager) or empty pool (lazy)
         - Parameter semaphore: The initialized semaphore with num items in pool (eager) or max items (lazy)
     */
-    public required init(pool:DefaultPool<Resource>, semaphore:dispatch_semaphore_t) {
+    public init(pool:DefaultPool<Resource>, semaphore:DispatchSemaphore) {
         self.pool = pool
         self.semaphore = semaphore
     }
@@ -159,7 +159,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
     */
     public func checkoutResource() -> Resource? {
         var resource:Resource?
-        if dispatch_semaphore_wait(self.semaphore, maxDispatchTime) == 0 {
+        if self.semaphore.wait(timeout: maxDispatchTime) == .success {
             // - This ^^ function returns 0 when the semaphore value is > 0 (success). This may be true immediately if,
             //       - the pool is started with semaphore greater than 0
             //       - the semaphore is currently 0 and it has been signaled changing it's value to 1.
@@ -186,11 +186,11 @@ public class ThreadSafePool<Resource> : ObjectPool {
         
         - Parameter resource: generic Resource
     */
-    public func checkin(resource: Resource) {
+    public func checkin(_ resource: Resource) {
         self.queue >- { [weak self] () -> Void in
             if let wself = self {
                 wself.pool.checkin(resource)
-                dispatch_semaphore_signal(wself.semaphore)
+                wself.semaphore.signal()
             }
         }
     }
@@ -202,7 +202,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         
         - Parameter callback: closure that takes an array of current resources
     */
-    public func processPool(callback: [Resource] -> Void) {
+    public func processPool(_ callback: @escaping ([Resource]) -> Void) {
         self.queue >|+ { () in callback(self.pool.resources) }
     }
 }
@@ -227,7 +227,7 @@ public class EagerPool<Resource> : ThreadSafePool<Resource> {
     */
     public required init(pool: DefaultPool<Resource>) {
         // Initialize the semaphore with the total resources in pool
-        super.init(pool: pool, semaphore: dispatch_semaphore_create(pool.resources.count))
+        super.init(pool: pool, semaphore: DispatchSemaphore(value: pool.resources.count))
     }
     
     /**
@@ -273,7 +273,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
         - Parameter maxResources: max num resources this pool can create
         - Parameter factory: closure to create new resources
     */
-    public required init(maxResources: Int, factory: () -> Resource) {
+    public required init(maxResources: Int, factory: @escaping () -> Resource) {
         self.resourceFactory = factory
         self.maxResources = maxResources
         
@@ -282,7 +282,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
         // can be created and returned to the client. This will continue to decrement until
         // 0 is reached at which point the semaphore will block, until a resource is returned
         // and the semaphore is signaled/incremented.
-        let semaphore = dispatch_semaphore_create(maxResources)
+        let semaphore = DispatchSemaphore(value: maxResources)
         
         super.init(pool: DefaultPool<Resource>(), semaphore: semaphore)
     }
@@ -317,7 +317,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
     */
     public override func checkoutResource() -> Resource? {
         var resource:Resource?
-        if dispatch_semaphore_wait(semaphore, maxDispatchTime) == 0 {
+        if semaphore.wait(timeout: maxDispatchTime) == .success {
             // See EagerPool re: this condition ^^
             self.queue >+ { () -> Void in
                 if self.pool.isEmpty() && self.canCreateAnotherResource() {

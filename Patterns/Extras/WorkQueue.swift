@@ -7,18 +7,21 @@
 
 import Foundation
 
+precedencegroup Additive {
+    associativity : left
+}
 
 /// Asynchronous WorkQueue scheduling operator.
-infix operator >- { associativity left }
+infix operator >- : Additive
 
 /// Synchronous WorkQueue scheduling operator.
-infix operator >+ { associativity left }
+infix operator >+ : Additive
 
 /// Asynchronous with barrier WorkQueue scheduling operator.
-infix operator >|- { associativity left }
+infix operator >|- : Additive
 
 /// Synchronous with barrier WorkQueue scheduling operator.
-infix operator >|+ { associativity left }
+infix operator >|+ : Additive
 
 
 /// Exception thrown when attempting to schedule a barrier block on a queue
@@ -42,14 +45,14 @@ public enum WorkQueue {
     
     
     /// WorkQueue for a dispatch_queue_t
-    case DispatchQueue(dispatch_queue_t)
+    case dispatchQueue(Dispatch.DispatchQueue)
 
     /// WorkQueue for an NSOperationQueue
-    case OperationQueue(NSOperationQueue)
+    case operationQueue(Foundation.OperationQueue)
 
     /// WorkQueue for the same thread of execution (just calls the block given
     /// for both sync and async).
-    case Immediate(NSThread)
+    case immediate(Thread)
 
     
     // ------------------------------------
@@ -60,7 +63,7 @@ public enum WorkQueue {
     /// Gets the current thread of execution
     public static var ImmediateDispatch: WorkQueue {
         get {
-            return Immediate(NSThread.currentThread())
+            return immediate(Thread.current)
         }
     }
     
@@ -68,7 +71,7 @@ public enum WorkQueue {
     /// Gets the main thread's dispatch queue.
     public static var MainDispatch: WorkQueue {
         get {
-            return DispatchQueue(dispatch_get_main_queue())
+            return dispatchQueue(DispatchQueue.main)
         }
     }
 
@@ -76,34 +79,16 @@ public enum WorkQueue {
     /// Gets the main thread's NSOperationQueue.
     public static var MainOps: WorkQueue {
         get {
-            return OperationQueue(NSOperationQueue.mainQueue())
+            return operationQueue(Foundation.OperationQueue.main)
         }
     }
-
     
-    /// Gets the high priority global dispatch queue.
-    public static var HighPriority: WorkQueue {
-        get {
-            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
-            return DispatchQueue(queue)
-        }
-    }
-
     
     /// Gets the default priority global dispatch queue.
     public static var DefaultPriority: WorkQueue {
         get {
-            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-            return DispatchQueue(queue)
-        }
-    }
-
-
-    /// Gets the low priority global dispatch queue.
-    public static var LowPriority: WorkQueue {
-        get {
-            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)
-            return DispatchQueue(queue)
+            let queue = DispatchQueue.global(qos: .default)
+            return dispatchQueue(queue)
         }
     }
 
@@ -111,18 +96,40 @@ public enum WorkQueue {
     /// Gets the background priority global dispatch queue.
     public static var Background: WorkQueue {
         get {
-            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
-            return DispatchQueue(queue)
+            let queue = DispatchQueue.global(qos: .background)
+            return dispatchQueue(queue)
+        }
+    }
+    
+    
+    /*
+     
+    // TODO: map these to appropriate quality of service classes
+
+    /// Gets the high priority global dispatch queue.
+    public static var HighPriority: WorkQueue {
+        get {
+            let queue = DispatchQueue.global(qos: .default)
+            return dispatchQueue(queue)
         }
     }
 
+    /// Gets the low priority global dispatch queue.
+    public static var LowPriority: WorkQueue {
+        get {
+            let queue = DispatchQueue.global(qos: .default)
+            return dispatchQueue(queue)
+        }
+    }
+
+    */
 
     /// Attempts to get the current NSOperationQueue and return it as a
     /// WorkQueue. Returns nothing if unsuccessful.
     public static var CurrentOps: WorkQueue? {
         get {
-            if let queue = NSOperationQueue.currentQueue() {
-                return OperationQueue(queue)
+            if let queue = Foundation.OperationQueue.current {
+                return operationQueue(queue)
             } else {
                 return nil
             }
@@ -132,26 +139,19 @@ public enum WorkQueue {
     
     // ------------------------------------
     // Parameterized factories for standard
-    // dispatch queues (concurrent and serial)
+    // dispatch queues (background and serial)
 
-
-    /// Allocates a new concurrent dispatch queue with the given name.
-    public static func concurrentDispatchQueue(named: String) -> WorkQueue {
-        let queue = named.withCString {
-            dispatch_queue_create($0, DISPATCH_QUEUE_CONCURRENT)
-        }
-        return DispatchQueue(queue)
+    /// Allocates a new background dispatch queue with the given name.
+    public static func backgroundDispatchQueue(_ named: String) -> WorkQueue {
+        return dispatchQueue(DispatchQueue(label: named, qos: .background))
     }
 
 
     /// Allocates a new serial dispatch queue with the given name.
-    public static func serialDispatchQueue(named: String) -> WorkQueue {
-        let queue = named.withCString {
-            dispatch_queue_create($0, DISPATCH_QUEUE_SERIAL)
-        }
-        return DispatchQueue(queue)
+    public static func serialDispatchQueue(_ named: String) -> WorkQueue {
+        return dispatchQueue(DispatchQueue(label: named)) // .default
     }
-
+    
 
     // ------------------------------------
     // Public methods for firing a block of work
@@ -160,16 +160,16 @@ public enum WorkQueue {
     
     /// Schedules the given block asynchronously on the WorkQueue. This is your
     /// fire-and-forget work.
-    func async(block: Work) {
+    func async(_ block: Work) {
         switch (self) {
-        case .Immediate(_):
+        case .immediate(_):
             block()
 
-        case let .DispatchQueue(queue):
-            dispatch_async(queue, block)
+        case let .dispatchQueue(queue):
+            queue.async(execute: block)
 
-        case let .OperationQueue(queue):
-            queue.addOperationWithBlock(block)
+        case let .operationQueue(queue):
+            queue.addOperation(block)
         }
     }
 
@@ -181,16 +181,16 @@ public enum WorkQueue {
     /// are already on will potentially deadlock or worse. Where possible,
     /// avoid synchronous tasks altogether or do not schedule them on the same
     /// queue currently executing the task.
-    func sync(block: Work) {
+    func sync(_ block: Work) {
         switch (self) {
-        case .Immediate(_):
+        case .immediate(_):
             block()
 
-        case let .DispatchQueue(queue):
-            dispatch_sync(queue, block)
+        case let .dispatchQueue(queue):
+            queue.sync(execute: block)
 
-        case let .OperationQueue(queue):
-            let blockOp = NSBlockOperation(block: block)
+        case let .operationQueue(queue):
+            let blockOp = BlockOperation(block: block)
             queue.addOperation(blockOp)
             blockOp.waitUntilFinished()
         }
@@ -208,21 +208,21 @@ public enum WorkQueue {
     /// Immediate queues continue to execute blocks
     /// immediately on the calling thread (i.e., same as just calling the block
     /// yourself).
-    func asyncWithBarrier(block: Work) {
+    func asyncWithBarrier(_ block: Work) {
         switch (self) {
-        case .Immediate(_):
+        case .immediate(_):
             // Would throw an exception for this as well, but this is already
             // sort of a barrier and mostly for the sake of debugging
             // (i.e., the chance of Immediate being useful in normal contexts
             // is really low).
             block()
 
-        case let .DispatchQueue(queue):
-            dispatch_barrier_async(queue, block)
+        case let .dispatchQueue(queue):
+            queue.async(flags: .barrier, execute: block)
 
-        case .OperationQueue(_):
+        case .operationQueue(_):
             NSException(
-                name: QBarrierUnsupportedException,
+                name: NSExceptionName(rawValue: QBarrierUnsupportedException),
                 reason: "Async barrier operations are unsupported for NSOperationQueue",
                 userInfo: nil
                 ).raise()
@@ -241,17 +241,17 @@ public enum WorkQueue {
     ///
     /// Immediate queues continue to execute blocks immediately on the calling
     /// thread (i.e., same as just calling the block yourself).
-    func syncWithBarrier(block: Work) {
+    func syncWithBarrier(_ block: Work) {
         switch (self) {
-        case .Immediate(_):
+        case .immediate(_):
             block()
 
-        case let .DispatchQueue(queue):
-            dispatch_barrier_sync(queue, block)
+        case let .dispatchQueue(queue):
+            queue.sync(flags: .barrier, execute: block)
 
-        case .OperationQueue(_):
+        case .operationQueue(_):
             NSException(
-                name: QBarrierUnsupportedException,
+                name: NSExceptionName(rawValue: QBarrierUnsupportedException),
                 reason: "Sync barrier operations are unsupported for NSOperationQueue",
                 userInfo: nil
                 ).raise()
@@ -262,7 +262,7 @@ public enum WorkQueue {
     /// Runs the given block on the main thread asynchronously. This is
     /// short-hand for requesting the main dispatch thread and calling its
     /// async method.
-    static func runOnMain(block: Work) {
+    static func runOnMain(_ block: Work) {
         MainDispatch.async(block)
     }
     
@@ -281,33 +281,33 @@ Author: David James
 */
 public func === (left: WorkQueue, right: WorkQueue) -> Bool {
     
-    var leftQueue:dispatch_queue_t?
-    var rightQueue:dispatch_queue_t?
-    var leftThread:NSThread?
-    var rightThread:NSThread?
+    var leftQueue:DispatchQueue?
+    var rightQueue:DispatchQueue?
+    var leftThread:Thread?
+    var rightThread:Thread?
     
     // Gather up left and right dispatch queues, if they exist.
     // For Immediate dispatches, check if they are on main thread.
     
     switch (left) {
-    case .DispatchQueue(let queue) :
+    case .dispatchQueue(let queue) :
         leftQueue = queue
-    case .OperationQueue(let queue) :
+    case .operationQueue(let queue) :
         if let underlyingQueue = queue.underlyingQueue {
             leftQueue = underlyingQueue
         }
-    case .Immediate(let thread) :
+    case .immediate(let thread) :
         leftThread = thread
     }
     
     switch (right) {
-    case .DispatchQueue(let queue) :
+    case .dispatchQueue(let queue) :
         rightQueue = queue
-    case .OperationQueue(let queue) :
+    case .operationQueue(let queue) :
         if let underlyingQueue = queue.underlyingQueue {
             rightQueue = underlyingQueue
         }
-    case .Immediate(let thread) :
+    case .immediate(let thread) :
         rightThread = thread
     }
     
@@ -315,10 +315,10 @@ public func === (left: WorkQueue, right: WorkQueue) -> Bool {
     // or baring that (for immediate dispatches) check if both threads are the same.
     // (Understand that immediate is not as useful, both in use and comparison.)
     
-    if let leftQueue = leftQueue, rightQueue = rightQueue {
+    if let leftQueue = leftQueue, let rightQueue = rightQueue {
         return leftQueue === rightQueue
     } else {
-        if let leftThread = leftThread, rightThread = rightThread {
+        if let leftThread = leftThread, let rightThread = rightThread {
             return leftThread === rightThread
         } else {
             return false
@@ -331,7 +331,7 @@ public func === (left: WorkQueue, right: WorkQueue) -> Bool {
 /// WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.async(block)
     return queue
 }
@@ -341,7 +341,7 @@ public func >- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// WorkQueue (i.e., this will not return until the block has finished).
 ///
 /// Returns the queue to permit chaining.
-public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.sync(block)
     return queue
 }
@@ -351,7 +351,7 @@ public func >+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// a barrier on a WorkQueue.
 ///
 /// Returns the queue to permit chaining.
-public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.asyncWithBarrier(block)
     return queue
 }
@@ -362,7 +362,7 @@ public func >|- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
 /// finished).
 ///
 /// Returns the queue to permit chaining.
-public func >|+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
+@discardableResult public func >|+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
     queue.syncWithBarrier(block)
     return queue
 }

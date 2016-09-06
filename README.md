@@ -1,5 +1,5 @@
 ![ViewQuery](./web/PatternsProjectBanner.png) 
-
+**Swift 3.0**
 Patterns Project
 ================
 

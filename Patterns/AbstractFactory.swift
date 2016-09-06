@@ -80,5 +80,5 @@ public protocol FactoryProducer {
     /// - parameter: optional context that provides information in
     ///     the decision making process for what factory to return
     /// - return: abstract factory TODO: should this be optional?
-    static func getFactory(context: FactoryContext) -> AbstractFactory
+    static func getFactory(_ context: FactoryContext) -> AbstractFactory
 }

@@ -87,7 +87,7 @@ public extension StatefulJob {
         
         - Parameter perform: closure containing the original Job's perform code.
     */
-    func internalPerform(perform:()->Void) {
+    func internalPerform(_ perform:()->Void) {
         if canPerform {
             perform()
             state.numTimesPerformed += 1
@@ -154,7 +154,7 @@ public protocol Worker {
     /**
         Do work for a single job
     */
-    func doWork(job: Job)
+    func doWork(_ job: Job)
 }
 
 /*
@@ -171,7 +171,7 @@ public protocol QueuedWorker {
     /**
         Add a job to the queue
     */
-    func addJob(job: Job)
+    func addJob(_ job: Job)
     /**
         Cancel all jobs
     */
@@ -200,7 +200,7 @@ public extension Worker {
         Do work for a single job on the current thread
         with no dispatch queues or operations.
      */
-    func doWork(job: Job) {
+    func doWork(_ job: Job) {
         job.perform()
     }
 }

@@ -74,7 +74,7 @@ public protocol StaticFactory : Factory {
     /// Some known interface
     associatedtype KnownInterface
     /// Single create method which takes context and returns the known interface
-    static func create(context: FactoryContext) -> KnownInterface?
+    static func create(_ context: FactoryContext) -> KnownInterface?
 }
 
 
