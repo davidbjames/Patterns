@@ -2,12 +2,10 @@
 //  PatternsTests.swift
 //  PatternsTests
 //
-//  Created by David James on 8/27/15.
-//  Copyright © 2015 Chaotic Moon. All rights reserved.
+//  Copyright © 2016 David James. All rights reserved.
 //
 
 import XCTest
-@testable import Patterns
 
 class PatternsTests: XCTestCase {
     
@@ -21,14 +19,12 @@ class PatternsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testPrototype() {
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
