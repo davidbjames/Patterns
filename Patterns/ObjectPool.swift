@@ -56,7 +56,7 @@ public protocol ObjectPool {
     /// Process all resources currently in the pool.
     /// Be aware the pool may change from what is passed to this method,
     /// if this method is called asynchronously.
-    func processPool(_ callback: ([Resource]) -> Void)
+    func processPool(_ callback: @escaping ([Resource]) -> Void)
 }
 
 /**

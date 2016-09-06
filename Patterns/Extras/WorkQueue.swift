@@ -7,18 +7,21 @@
 
 import Foundation
 
+precedencegroup Additive {
+    associativity : left
+}
 
 /// Asynchronous WorkQueue scheduling operator.
-infix operator >- { associativity left }
+infix operator >- : Additive
 
 /// Synchronous WorkQueue scheduling operator.
-infix operator >+ { associativity left }
+infix operator >+ : Additive
 
 /// Asynchronous with barrier WorkQueue scheduling operator.
-infix operator >|- { associativity left }
+infix operator >|- : Additive
 
 /// Synchronous with barrier WorkQueue scheduling operator.
-infix operator >|+ { associativity left }
+infix operator >|+ : Additive
 
 
 /// Exception thrown when attempting to schedule a barrier block on a queue

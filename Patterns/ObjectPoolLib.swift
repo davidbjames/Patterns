@@ -34,7 +34,7 @@ import Foundation
 public class DefaultPool<Resource> : ObjectPool {
     
     /// Core array of resources. Always private. Use protocol methods to access.
-    private var resources:[Resource]
+    fileprivate var resources:[Resource]
     
     /**
         Initialize empty pool.
@@ -82,7 +82,7 @@ public class DefaultPool<Resource> : ObjectPool {
         Be aware the pool may change from what is passed to this method,
         if this method is called asynchronously.
     */
-    public func processPool(_ callback: ([Resource]) -> Void) {
+    public func processPool(_ callback: @escaping ([Resource]) -> Void) {
         callback(self.resources)
     }
     
@@ -123,15 +123,15 @@ public class ThreadSafePool<Resource> : ObjectPool {
     public var maxTimeOut:Double?
     
     /// The pool
-    private let pool:DefaultPool<Resource>
+    fileprivate let pool:DefaultPool<Resource>
     
     /// Semaphore used to make the pool (thread) safe,
     /// i.e. the pool will only attempt returning a resource if one is available
-    private let semaphore:DispatchSemaphore
+    fileprivate let semaphore:DispatchSemaphore
     
     /// Maximum time in seconds that the semaphore should wait before failing to provide Resource
     /// Default is to block forever.
-    private var maxDispatchTime:DispatchTime {
+    fileprivate var maxDispatchTime:DispatchTime {
         if let maxTimeOut = maxTimeOut {
             return DispatchTime.now() + Double(Int64(maxTimeOut * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         } else {
@@ -202,7 +202,7 @@ public class ThreadSafePool<Resource> : ObjectPool {
         
         - Parameter callback: closure that takes an array of current resources
     */
-    public func processPool(_ callback: ([Resource]) -> Void) {
+    public func processPool(_ callback: @escaping ([Resource]) -> Void) {
         self.queue >|+ { () in callback(self.pool.resources) }
     }
 }
@@ -273,7 +273,7 @@ public class LazyPool<Resource> : ThreadSafePool<Resource> {
         - Parameter maxResources: max num resources this pool can create
         - Parameter factory: closure to create new resources
     */
-    public required init(maxResources: Int, factory: () -> Resource) {
+    public required init(maxResources: Int, factory: @escaping () -> Resource) {
         self.resourceFactory = factory
         self.maxResources = maxResources
         
