@@ -334,26 +334,9 @@ Examples to the Power of Wow
 
 To really see the pattern protocols in action, visit [Patterns Examples](https://github.com/davidbjames/PatternsExamples) where you'll find Swift Playgrounds with all of the patterns found in this project.
 
-CocoaPods Install
------------------
-
-Add these lines to your Podfile:
-
-~~~Ruby
-source 'https://github.com/davidbjames/CocoaPods-Specs.git'
-~~~
-
-Note: until this is out of Alpha stage, I'll use my private spec repo, which means you will also need to source the [CocoaPods spec repo](https://github.com/CocoaPods/Specs) in your Podfile, in order for other dependencies to load. Sorry, for now.
-
-~~~Ruby
-pod 'Patterns'
-~~~
-
 ***
 
 Project Status
 --------------
 
-At this time, the project contains 90% of the [creational patterns](https://en.wikipedia.org/wiki/Creational_pattern). Due to time constraints I have been unable to finish the remaining patterns (including structural and behavioral). I hope to pick that up again soon. Honestly, I'd like the first stab at getting all the original patterns represented before opening this to contributions, but I'd be interested in hearing any feedback or proposals via the issue navigator!
-
-David James
+> At this time, the project contains 90% of the [creational patterns](https://en.wikipedia.org/wiki/Creational_pattern). However, due to time constraints (and reprioritizing my life) I have been unable to finish the remaining patterns (including structural and behavioral). I hope to pick that up again soon. – David James
